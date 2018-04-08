@@ -82,4 +82,7 @@ module.exports = function(app) {
 
   app.route('/login')
     .post(cooklab.login_by_username_and_password);
+
+  app.route('/delete_all_user')
+    .delete(cooklab.delete_all_user);
 };

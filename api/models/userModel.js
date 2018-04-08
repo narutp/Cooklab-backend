@@ -14,7 +14,7 @@ var UserSchema = new Schema({
   },
   bio: {
     type: String,
-    default: 0
+    default: ''
   },
   experience: {
     type: Number,

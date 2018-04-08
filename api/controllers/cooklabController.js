@@ -145,16 +145,21 @@ exports.create_new_post = function(req, res) {
 };
 
 exports.create_new_user = function(req, res) {
-  var new_user = new UserModel(req.body);
-  new_user.save(function(err, user) {
-    console.log(err)
-    if (err) {
-      res.send(err);
+  UserModel.find({name : req.body.name}, function (err, user) {
+    if (user.length){
+        res.json(true)
+    }else{
+      var new_user = new UserModel(req.body);
+      new_user.save(function(err, newuser) {
+        if (err) {
+          res.send(err);
+        }
+        else {
+          res.json(true);
+        }
+      });
     }
-    else {
-      res.json(user);
-    }
-  });
+  })  
 };
 
 exports.get_achievement = function(req, res) {
@@ -543,6 +548,17 @@ exports.login_by_username_and_password = function(req, res) {
       res.json(result)
     }
   });
+}
+
+exports.delete_all_user = function(req, res) {
+  UserModel.remove({}, function(err,) {
+    if (err) {
+      console.log(err)
+    } else {
+      res.end('success');
+    }
+  });
+
 }
 
 function compare(a,b) {
