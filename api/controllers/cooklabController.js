@@ -155,7 +155,17 @@ exports.create_new_user = function(req, res) {
           res.send(err);
         }
         else {
-          res.json(true);
+          UserModel.find({_id : newuser._id}, function (err, newUser) {
+            if (err) {
+              res.send(err);
+            }
+            else { 
+              var hashedPassword = passwordHash.generate(newuser.password);
+              new_user.password = hashedPassword
+              new_user.save()
+              res.json(true);
+            }
+          })
         }
       });
     }
