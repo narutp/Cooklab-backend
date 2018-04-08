@@ -145,7 +145,7 @@ exports.create_new_post = function(req, res) {
 };
 
 exports.create_new_user = function(req, res) {
-  var new_user = new UserModel(req.query);
+  var new_user = new UserModel(req.body);
   new_user.save(function(err, user) {
     console.log(err)
     if (err) {
@@ -250,7 +250,7 @@ exports.get_user = function(req, res) {
 };
 
 exports.update_achievement = function(req, res) {
-  AchievementModel.findOneAndUpdate({_id: req.params.achievementId}, req.body, {new: true}, function(err, achievement) {
+  AchievementModel.findOneAndUpdate({_id: req.body.achievementId}, req.body, {new: true}, function(err, achievement) {
     if (err) {
       res.send(err);
     }
@@ -261,7 +261,7 @@ exports.update_achievement = function(req, res) {
 };
 
 exports.update_comment = function(req, res) {
-  CommentModel.findOneAndUpdate({_id: req.params.commentId}, req.body, {new: true}, function(err, comment) {
+  CommentModel.findOneAndUpdate({_id: req.body.commentId}, req.body, {new: true}, function(err, comment) {
     if (err) {
       res.send(err);
     }
@@ -272,7 +272,7 @@ exports.update_comment = function(req, res) {
 };
 
 exports.update_dish = function(req, res) {
-  DishModel.findOneAndUpdate({_id: req.params.dishId}, req.body, {new: true}, function(err, dish) {
+  DishModel.findOneAndUpdate({_id: req.body.dishId}, req.body, {new: true}, function(err, dish) {
     if (err) {
       res.send(err);
     }
@@ -283,7 +283,7 @@ exports.update_dish = function(req, res) {
 };
 
 exports.update_ingredient = function(req, res) {
-  IngredientModel.findOneAndUpdate({_id: req.params.ingredientId}, req.body, {new: true}, function(err, ingredient) {
+  IngredientModel.findOneAndUpdate({_id: req.body.ingredientId}, req.body, {new: true}, function(err, ingredient) {
     if (err) {
       res.send(err);
     }
@@ -294,7 +294,7 @@ exports.update_ingredient = function(req, res) {
 };
 
 exports.update_post = function(req, res) {
-  PostModel.findOneAndUpdate({_id: req.params.postId}, req.body, {new: true}, function(err, post) {
+  PostModel.findOneAndUpdate({_id: req.body.postId}, req.body, {new: true}, function(err, post) {
     if (err) {
       res.send(err);
     }
@@ -305,7 +305,7 @@ exports.update_post = function(req, res) {
 };
 
 exports.update_user = function(req, res) {
-  UserModel.findOneAndUpdate({_id: req.params.userId}, req.body, {new: true}, function(err, user) {
+  UserModel.findOneAndUpdate({_id: req.body.userId}, req.body, {new: true}, function(err, user) {
     if (err) {
       res.send(err);
     }
@@ -316,7 +316,7 @@ exports.update_user = function(req, res) {
 };
 
 exports.delete_achievement = function(req, res) {
-  AchievementModel.remove({_id: req.params.achievementId}, function(err, achievement) {
+  AchievementModel.remove({_id: req.body.achievementId}, function(err, achievement) {
     if (err) {
       res.send(err);
     }
@@ -328,7 +328,7 @@ exports.delete_achievement = function(req, res) {
 
 exports.delete_comment = function(req, res) {
   var postId
-  CommentModel.findOne({_id: req.params.commentId}, function(err, comment) {
+  CommentModel.findOne({_id: req.body.commentId}, function(err, comment) {
     if (err) {
       res.send(err);
     }
@@ -336,7 +336,7 @@ exports.delete_comment = function(req, res) {
       postId = comment.id_post
     }
   })
-  CommentModel.remove({_id: req.params.commentId}, function(err, comment) {
+  CommentModel.remove({_id: req.body.commentId}, function(err, comment) {
     if (err) {
       res.send(err);
     }
@@ -346,7 +346,7 @@ exports.delete_comment = function(req, res) {
           res.send(err);
         }
         else {
-          var index = post.comments.indexOf(req.params.commentId)
+          var index = post.comments.indexOf(req.body.commentId)
           if (index > -1) {
             post.comments.splice(index, 1);
           }
@@ -359,7 +359,7 @@ exports.delete_comment = function(req, res) {
 };
 
 exports.delete_dish = function(req, res) {
-  DishModel.remove({_id: req.params.dishId}, function(err, dish) {
+  DishModel.remove({_id: req.body.dishId}, function(err, dish) {
     if (err) {
       res.send(err);
     }
@@ -370,7 +370,7 @@ exports.delete_dish = function(req, res) {
 };
 
 exports.delete_ingredient = function(req, res) {
-  IngredientModel.remove({_id: req.params.ingredientId}, function(err, ingredient) {
+  IngredientModel.remove({_id: req.body.ingredientId}, function(err, ingredient) {
     if (err) {
       res.send(err);
     }
@@ -382,7 +382,7 @@ exports.delete_ingredient = function(req, res) {
 
 exports.delete_post = function(req, res) {
   var comments_arr
-  PostModel.findOne({_id: req.params.postId},'comments', function(err, comments) {
+  PostModel.findOne({_id: req.body.postId},'comments', function(err, comments) {
     if (err) {
       res.send(err);
     }
@@ -390,7 +390,7 @@ exports.delete_post = function(req, res) {
       comments_arr = comments.comments
     }
   })
-  PostModel.remove({_id: req.params.postId}, function(err, post) {
+  PostModel.remove({_id: req.body.postId}, function(err, post) {
     if (err) {
       res.send(err);
     }
@@ -408,7 +408,7 @@ exports.delete_post = function(req, res) {
 };
 
 exports.delete_user = function(req, res) {
-  UserModel.remove({_id: req.params.userId}, function(err, user) {
+  UserModel.remove({_id: req.body.userId}, function(err, user) {
     if (err) {
       res.send(err);
     }
@@ -419,21 +419,21 @@ exports.delete_user = function(req, res) {
 };
 
 exports.follow_user = function(req, res) {
-  UserModel.findOne({_id: req.params.userId}, function(err, user) {
+  UserModel.findOne({_id: req.body.userId}, function(err, user) {
     if (err) {
       res.send(err);
     }
     else {
-      user.followings.push(req.params.targetId)
+      user.followings.push(req.body.targetId)
       user.save()
     }
   });
-  UserModel.findOne({_id: req.params.targetId}, function(err, targetUser) {
+  UserModel.findOne({_id: req.body.targetId}, function(err, targetUser) {
     if (err) {
       res.send(err);
     }
     else {
-      targetUser.fans.push(req.params.userId)
+      targetUser.fans.push(req.body.userId)
       targetUser.save()
       res.json(targetUser)
     }
@@ -441,24 +441,24 @@ exports.follow_user = function(req, res) {
 };
 
 exports.unfollow_user = function(req, res) {
-  UserModel.findOne({_id: req.params.userId}, function(err, user) {
+  UserModel.findOne({_id: req.body.userId}, function(err, user) {
     if (err) {
       res.send(err);
     }
     else {
-      var index = user.followings.indexOf(req.params.targetId)
+      var index = user.followings.indexOf(req.body.targetId)
       if (index > -1) {
         user.followings.splice(index, 1);
       }
       user.save()
     }
   });
-  UserModel.findOne({_id: req.params.targetId}, function(err, targetUser) {
+  UserModel.findOne({_id: req.body.targetId}, function(err, targetUser) {
     if (err) {
       res.send(err);
     }
     else {
-      var index = targetUser.fans.indexOf(req.params.userId)
+      var index = targetUser.fans.indexOf(req.body.userId)
       if (index > -1) {
         targetUser.fans.splice(index, 1);
       }
@@ -504,13 +504,13 @@ exports.get_top_feed = function(req, res) {
 };
 
 exports.love_post = function(req, res) {
-  PostModel.findOne({_id: req.params.postId}, function(err, post) {
+  PostModel.findOne({_id: req.body.postId}, function(err, post) {
     if (err) {
       res.send(err)
     }
     else {
       post.loves++
-      post.love_list.push(req.params.userId)
+      post.love_list.push(req.body.userId)
       post.save()
       res.json(post)
     }
@@ -518,13 +518,13 @@ exports.love_post = function(req, res) {
 };
 
 exports.dislove_post = function(req, res) {
-  PostModel.findOne({_id: req.params.postId}, function(err, post) {
+  PostModel.findOne({_id: req.body.postId}, function(err, post) {
     if (err) {
       res.send(err)
     }
     else {
       post.loves--
-      var index = post.love_list.indexOf(req.params.userId)
+      var index = post.love_list.indexOf(req.body.userId)
       post.love_list.splice(index, 1)
       post.save()
       res.json(post)
@@ -544,8 +544,6 @@ exports.login_by_username_and_password = function(req, res) {
     }
   });
 }
-
-
 
 function compare(a,b) {
   if (a.timestamp < b.timestamp)
