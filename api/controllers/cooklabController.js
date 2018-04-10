@@ -145,7 +145,7 @@ exports.create_new_post = function(req, res) {
 };
 
 exports.create_new_user = function(req, res) {
-  UserModel.find({name : req.body.name}, function (err, user) {
+  UserModel.find({username : req.body.username}, function (err, user) {
     if (user.length){
         res.json(true)
     }else{
@@ -490,6 +490,7 @@ exports.get_feeds_by_user_id = function(req, res) {
     }
     else {
       var followings_arr = followings.followings
+      followings_arr.push(req.params.userId)
       PostModel.find({id_user: {$in: followings_arr}}, function(err, post) {
         if (err) {
           res.send(err);
