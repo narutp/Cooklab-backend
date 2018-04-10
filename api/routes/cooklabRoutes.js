@@ -2,6 +2,9 @@
 
 module.exports = function(app) {
   var cooklab = require('../controllers/cooklabController');
+  var posting = require('../controllers/postingController');
+  var user = require('../controllers/userController');
+  var dish = require('../controllers/dishController');
 
   app.route('/achievements')
     .get(cooklab.list_all_achievements)
