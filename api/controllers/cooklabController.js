@@ -573,10 +573,11 @@ exports.delete_all_user = function(req, res) {
 }
 
 exports.get_id_user_by_username = function(req, res) {
-  UserModel.findOne({username: req.params.username}, function(err, user) {
+  UserModel.findOne({username: req.query.username}, function(err, user) {
     if (err) {
       console.log(err)
     } else {
+      console.log(user)
       res.json(user._id);
     }
   })
