@@ -90,6 +90,6 @@ module.exports = function(app) {
   app.route('/delete_all_user')
     .delete(cooklab.delete_all_user);
 
-  app.route('/get_user/:username')
+  app.route('/get_user')
     .get(cooklab.get_id_user_by_username);
 };
