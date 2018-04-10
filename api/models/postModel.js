@@ -14,7 +14,6 @@ var PostSchema = new Schema({
   },
   caption: {
     type: String,
-    required: 'Enter the caption of the post'
   },
   loves: {
     type: Number,
@@ -27,12 +26,13 @@ var PostSchema = new Schema({
   comments: {
     type: Array,
     default: [],
-    required: 'Id of Comments in this post'
   },
   love_list: { 
     type: Array,
     default: [],
-    required: 'List of id of user who love this post'
+  },
+  image: {
+    type: String
   }
   
 });

@@ -5,18 +5,16 @@ var Schema = mongoose.Schema;
 
 var DishSchema = new Schema({
   name: {
-    type: String,
-    required: 'Name of the dish'
+    type: String
   },
   description: {
-    type: String,
-    required: 'Description of the dish'
+    type: String
   },
   level: {
     type: String,
     enum: ['beginner', 'intermediate', 'senior', 'expert']
   },
-  score: {
+  exp: {
     type: Number,
     default: 0
   },
@@ -25,24 +23,25 @@ var DishSchema = new Schema({
     default: 0
   },
   calories: {
-    type: Number,
-    required: 'Calories of the dish'
+    type: Number
   },
   image: { 
-    type: String,
-    required: 'URL of image of the dish'
+    type: String
   },
   recipe: {
-    type: String,
-    required: 'Recipe of the dish'
+    type: String
   },
   ingredients: {
-    type: Array,
-    required: 'Ingredients of the dish'
+    type: Array
   },
   tags: {
     type: Array,
     default: []
+  },
+  type: {
+    type: String,
+    enum: ['normal', 'mydish'],
+    default: 'normal'
   }
   
 });

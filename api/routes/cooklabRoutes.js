@@ -12,7 +12,9 @@ module.exports = function(app) {
     .post(cooklab.create_new_comment);
 
   app.route('/dishes')
-    .get(cooklab.list_all_dishes)
+    .get(cooklab.list_all_dishes);
+
+  app.route('/create_dish')
     .post(cooklab.create_new_dish);
 
   app.route('/ingredients')
@@ -20,7 +22,9 @@ module.exports = function(app) {
     .post(cooklab.create_new_ingredient);
 
   app.route('/posts')
-    .get(cooklab.list_all_posts)
+    .get(cooklab.list_all_posts);
+
+  app.route('/create_post')
     .post(cooklab.create_new_post);
 
   app.route('/users')

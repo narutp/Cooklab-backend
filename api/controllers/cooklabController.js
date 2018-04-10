@@ -115,7 +115,7 @@ exports.create_new_dish = function(req, res) {
       res.send(err);
     }
     else {
-      res.json(dish);
+      res.json(dish._id);
     }
   });
 };
