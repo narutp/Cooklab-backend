@@ -572,6 +572,16 @@ exports.delete_all_user = function(req, res) {
 
 }
 
+exports.get_id_user_by_username = function(req, res) {
+  UserModel.findOne({username: req.params.username}, function(err, user) {
+    if (err) {
+      console.log(err)
+    } else {
+      res.json(user._id);
+    }
+  })
+}
+
 function compare(a,b) {
   if (a.timestamp < b.timestamp)
     return 1;
