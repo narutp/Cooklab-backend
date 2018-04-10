@@ -439,6 +439,7 @@ exports.follow_user = function(req, res) {
       res.send(err);
     }
     else {
+      console.log(user)
       user.followings.push(req.body.targetId)
       user.save()
     }
@@ -484,13 +485,14 @@ exports.unfollow_user = function(req, res) {
 };
 
 exports.get_feeds_by_user_id = function(req, res) {
-  UserModel.findOne({_id: req.params.userId},'followings', function(err, followings) {
+  UserModel.findOne({_id: req.query.userId},'followings', function(err, followings) {
     if (err) {
       res.send(err)
     }
     else {
       var followings_arr = followings.followings
-      followings_arr.push(req.params.userId)
+      followings_arr.push(req.query.userId)
+      console.log(followings_arr)
       PostModel.find({id_user: {$in: followings_arr}}, function(err, post) {
         if (err) {
           res.send(err);

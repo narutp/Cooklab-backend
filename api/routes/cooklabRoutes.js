@@ -66,13 +66,13 @@ module.exports = function(app) {
     .put(cooklab.update_user)
     .delete(cooklab.delete_user);
 
-  app.route('/follow/:userId/:targetId')
+  app.route('/follow')
     .put(cooklab.follow_user);
 
-  app.route('/unfollow/:userId/:targetId')
+  app.route('/unfollow')
     .put(cooklab.unfollow_user);
 
-  app.route('/feeds/:userId')
+  app.route('/feeds')
     .get(cooklab.get_feeds_by_user_id);
 
   app.route('/topfeed')
