@@ -147,7 +147,7 @@ module.exports = {
   },
   
   delete_all_user: function(req, res) {
-    UserModel.remove({}, function(err,) {
+    UserModel.remove({}, function(err,user) {
       if (err) {
         console.log(err)
       } else {

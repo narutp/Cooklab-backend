@@ -216,17 +216,19 @@ module.exports = {
         return postResponse[i].id_user == user._id
       })[0]
       let name = user.name
+      let status = (postResponse[i].trophy_list.indexOf(req.query.userId) > -1)
       let postDetail = {
-        loves: postResponse[i].loves,
+        trophies: postResponse[i].trophies,
         comments: postResponse[i].comments,
-        love_list: postResponse[i].love_list,
+        trophy_list: postResponse[i].trophy_list,
         timestamp: postResponse[i].timestamp,
         _id: postResponse[i]._id,
         id_dish: postResponse[i].id_dish,
         id_user: postResponse[i].id_user,
         image: postResponse[i].image,
         caption: postResponse[i].caption,
-        user_name: user.name
+        user_name: user.name,
+        status: status
       }
       returnResponse.push(postDetail)
     }
@@ -272,6 +274,16 @@ module.exports = {
         res.json(post)
       }
     })
+  },
+
+  delete_all_post: function(req, res) {
+    PostModel.remove({}, function(err,post) {
+      if (err) {
+        console.log(err)
+      } else {
+        res.end('success');
+      }
+    });
   }
 }
 

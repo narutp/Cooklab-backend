@@ -98,6 +98,9 @@ module.exports = function(app) {
   app.route('/delete_all_user')
     .delete(user.delete_all_user);
 
+  app.route('/delete_all_post')
+    .delete(posting.delete_all_post);
+
   app.route('/get_user')
     .get(user.get_id_user_by_username);
 

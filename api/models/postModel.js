@@ -23,11 +23,11 @@ var PostSchema = new Schema({
   },
   comments: {
     type: Array,
-    default: [],
+    default: []
   },
   trophy_list: { 
     type: Array,
-    default: [],
+    default: []
   },
   image: {
     type: String
