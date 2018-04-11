@@ -6,11 +6,9 @@ var Schema = mongoose.Schema;
 var PostSchema = new Schema({
   id_dish: {
     type: String,
-    required: 'Id of dish in the post'
   },
   id_user: {
     type: String,
-    required: 'Id of the user that post this post'
   },
   caption: {
     type: String,

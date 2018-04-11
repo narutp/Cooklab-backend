@@ -6,35 +6,40 @@ module.exports = function(app) {
   var user = require('../controllers/userController');
   var dish = require('../controllers/dishController');
 
+
   app.route('/achievements')
     .get(cooklab.list_all_achievements)
     .post(cooklab.create_new_achievement);
 
   app.route('/comments')
-    .get(cooklab.list_all_comments)
-    .post(cooklab.create_new_comment);
+    .get(posting.list_all_comments);
+
+  app.route('/create_comment')
+    .post(posting.create_new_comment);
 
   app.route('/dishes')
-    .get(cooklab.list_all_dishes);
+    .get(dish.list_all_dishes);
 
   app.route('/create_dish')
-    .post(cooklab.create_new_dish);
+    .post(dish.create_new_dish);
 
   app.route('/ingredients')
-    .get(cooklab.list_all_ingredients)
-    .post(cooklab.create_new_ingredient);
+    .get(dish.list_all_ingredients);
+
+  app.route('/create_ingredient')
+    .post(dish.create_new_ingredient);
 
   app.route('/posts')
-    .get(cooklab.list_all_posts);
+    .get(posting.list_all_posts);
 
   app.route('/create_post')
-    .post(cooklab.create_new_post);
+    .post(posting.create_new_post);
 
   app.route('/users')
-    .get(cooklab.list_all_users)
+    .get(user.list_all_users)
 
   app.route('/create_user')
-    .post(cooklab.create_new_user);
+    .post(user.create_new_user);
 
   app.route('/achievements/:achievementId')
     .get(cooklab.get_achievement)
@@ -42,57 +47,58 @@ module.exports = function(app) {
     .delete(cooklab.delete_achievement);
 
   app.route('/comments/:commentId')
-    .get(cooklab.get_comment)
-    .put(cooklab.update_comment)
-    .delete(cooklab.delete_comment);
+    .get(posting.get_comment)
+    .put(posting.update_comment)
+    .delete(posting.delete_comment);
 
   app.route('/dishes/:dishId')
-    .get(cooklab.get_dish)
-    .put(cooklab.update_dish)
-    .delete(cooklab.delete_dish); 
+    .get(dish.get_dish)
+    .put(dish.update_dish)
+    .delete(dish.delete_dish); 
     
   app.route('/ingredients/:ingredientId')
-    .get(cooklab.get_ingredient)
-    .put(cooklab.update_ingredient)
-    .delete(cooklab.delete_ingredient);
+    .get(dish.get_ingredient)
+    .put(dish.update_ingredient)
+    .delete(dish.delete_ingredient);
 
   app.route('/posts/:postId')
-    .get(cooklab.get_post_by_post_id)
-    .put(cooklab.update_post)
-    .delete(cooklab.delete_post);
+    .get(posting.get_post_by_post_id)
+    .put(posting.update_post)
+    .delete(posting.delete_post);
 
   app.route('/posts/userId/:userId')
-    .get(cooklab.get_images_posts_by_user_id);
+    .get(posting.get_images_posts_by_user_id);
 
   app.route('/users/:userId')
-    .get(cooklab.get_user)
-    .put(cooklab.update_user)
-    .delete(cooklab.delete_user);
+    .get(user.get_user)
+    .put(user.update_user)
+    .delete(user.delete_user);
 
   app.route('/follow')
-    .put(cooklab.follow_user);
+    .put(user.follow_user);
 
   app.route('/unfollow')
-    .put(cooklab.unfollow_user);
+    .put(user.unfollow_user);
 
   app.route('/feeds')
-    .get(cooklab.get_feeds_by_user_id);
+    .get(posting.get_feeds_by_user_id);
 
   app.route('/topfeed')
-    .get(cooklab.get_top_feed);
+    .get(posting.get_top_feed);
 
-  app.route('/love/:postId/:userId')
-    .put(cooklab.love_post);
+  app.route('/love')
+    .put(posting.love_post);
     
-  app.route('/dislove/:postId/:userId')
-    .put(cooklab.dislove_post);
+  app.route('/dislove')
+    .put(posting.dislove_post);
 
   app.route('/login')
-    .post(cooklab.login_by_username_and_password);
+    .post(user.login_by_username_and_password);
 
   app.route('/delete_all_user')
-    .delete(cooklab.delete_all_user);
+    .delete(user.delete_all_user);
 
   app.route('/get_user')
-    .get(cooklab.get_id_user_by_username);
+    .get(user.get_id_user_by_username);
+
 };
