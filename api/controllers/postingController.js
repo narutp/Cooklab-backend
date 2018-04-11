@@ -253,6 +253,8 @@ module.exports = {
         res.send(err)
       }
       else {
+        if (post.trophy_list.indexOf(req.body.userId) > -1)
+          res.json(post)
         post.trophies++
         post.trophy_list.push(req.body.userId)
         post.save()
@@ -267,6 +269,8 @@ module.exports = {
         res.send(err)
       }
       else {
+        if (post.trophy_list.indexOf(req.body.userId) <= -1)
+          res.json(post)
         post.trophies--
         var index = post.trophy_list.indexOf(req.body.userId)
         post.trophy_list.splice(index, 1)
