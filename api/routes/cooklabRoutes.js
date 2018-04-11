@@ -86,11 +86,11 @@ module.exports = function(app) {
   app.route('/topfeed')
     .get(posting.get_top_feed);
 
-  app.route('/love')
-    .put(posting.love_post);
+  app.route('/increase_trophy')
+    .put(posting.increase_trophy);
     
-  app.route('/dislove')
-    .put(posting.dislove_post);
+  app.route('/decrease_trophy')
+    .put(posting.decrease_trophy);
 
   app.route('/login')
     .post(user.login_by_username_and_password);

@@ -13,7 +13,7 @@ var PostSchema = new Schema({
   caption: {
     type: String,
   },
-  loves: {
+  trophies: {
     type: Number,
     default: 0
   },
@@ -25,7 +25,7 @@ var PostSchema = new Schema({
     type: Array,
     default: [],
   },
-  love_list: { 
+  trophy_list: { 
     type: Array,
     default: [],
   },

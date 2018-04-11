@@ -245,29 +245,29 @@ module.exports = {
     });
   },
   
-  love_post: function(req, res) {
+  increase_trophy: function(req, res) {
     PostModel.findOne({_id: req.body.postId}, function(err, post) {
       if (err) {
         res.send(err)
       }
       else {
-        post.loves++
-        post.love_list.push(req.body.userId)
+        post.trophies++
+        post.trophy_list.push(req.body.userId)
         post.save()
         res.json(post)
       }
     });
   },
   
-  dislove_post: function(req, res) {
+  decrease_trophy: function(req, res) {
     PostModel.findOne({_id: req.body.postId}, function(err, post) {
       if (err) {
         res.send(err)
       }
       else {
-        post.loves--
-        var index = post.love_list.indexOf(req.body.userId)
-        post.love_list.splice(index, 1)
+        post.trophies--
+        var index = post.trophy_list.indexOf(req.body.userId)
+        post.trophy_list.splice(index, 1)
         post.save()
         res.json(post)
       }
