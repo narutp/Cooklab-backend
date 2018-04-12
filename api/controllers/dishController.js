@@ -12,17 +12,20 @@ var mongoose = require('mongoose'),
 module.exports = {
   list_all_dishes: async (req, res) => {
     let dishesResponse = await DishModel.find({})
-    return res.json(dishesResponse)
+    res.json(dishesResponse)
   },
     
   list_all_ingredients: async (req, res) => {
     let ingredientsResponse = await IngredientModel.find({})
-    return res.json(ingredientsResponse)
+    res.json(ingredientsResponse)
   },
   
   create_new_dish: async (req, res) => {
-    let newDish = await new DishModel(req.body).save()
-    res.json(newDish) 
+    let newDish =  new DishModel(req.body)
+    newDish.recipe = req.body.recipe_str.split("\n")
+    newDish.ingredients = req.body.ingredients_str.split("\n")
+    await newDish.save()
+    res.json(newDish)
   },
   
   create_new_ingredient: async (req, res) => {
@@ -30,69 +33,43 @@ module.exports = {
     res.json(newIngredient)
   },
   
-  get_dish: function(req, res) {
-    DishModel.findById(req.params.dishId, function(err, dish) {
-      if (err) {
-        res.send(err);
-      }
-      else {
-        res.json(dish);
-      }
-    });
+  get_dish: async (req, res) => {
+    let dishResponse = await DishModel.findById(req.params.dishId)
+    res.json(dishResponse)
   },
   
-  get_ingredient: function(req, res) {
-    IngredientModel.findById(req.params.ingredientId, function(err, ingredient) {
-      if (err) {
-        res.send(err);
-      }
-      else {
-        res.json(ingredient);
-      }
-    });
+  get_ingredient: async (req, res) => {
+    let ingredientResponse = await IngredientModel.findById(req.params.ingredientId)
+    res.json(ingredientResponse)
   },
   
-  update_dish: function(req, res) {
-    DishModel.findOneAndUpdate({_id: req.body.dishId}, req.body, {new: true}, function(err, dish) {
-      if (err) {
-        res.send(err);
-      }
-      else {
-        res.json(dish);
-      }
-    });
+  update_dish: async (req, res) => {
+    let dishResponse = await DishModel.findOneAndUpdate({_id: req.params.dishId}, req.body, {new: true})
+    res.json(dishResponse)
   },
   
-  update_ingredient: function(req, res) {
-    IngredientModel.findOneAndUpdate({_id: req.body.ingredientId}, req.body, {new: true}, function(err, ingredient) {
-      if (err) {
-        res.send(err);
-      }
-      else {
-        res.json(ingredient);
-      }
-    });
+  update_ingredient: async (req, res) => {
+    let ingredientResponse = await IngredientModel.findOneAndUpdate({_id: req.body.ingredientId}, req.body, {new: true})
+    res.json(ingredientResponse)
   },
   
-  delete_dish: function(req, res) {
-    DishModel.remove({_id: req.body.dishId}, function(err, dish) {
-      if (err) {
-        res.send(err);
-      }
-      else {
-        res.json({ message: 'Dish successfully deleted' });
-      }
-    });
+  delete_dish: async (req, res) => {
+    let dishResponse = await DishModel.remove({_id: req.params.dishId})
+    res.json('Delete successful')
   },
   
-  delete_ingredient: function(req, res) {
-    IngredientModel.remove({_id: req.body.ingredientId}, function(err, ingredient) {
-      if (err) {
-        res.send(err);
-      }
-      else {
-        res.json({ message: 'Ingredient successfully deleted' });
-      }
-    })
+  delete_ingredient: async (req, res) => {
+    let ingredientResponse = await IngredientModel.remove({_id: req.params.ingredientId})
+    res.json('Delete successful')
+  },
+
+  delete_all_dish: async (req, res) => {
+    let dishResponse = await DishModel.remove({})
+    res.json('Delete all dish successful')
+  },
+
+  delete_all_ingredient: async (req, res) => {
+    let ingredientResponse = await IngredientModel.remove({})
+    res.json('Delete all ingredient successful')
   }
 }

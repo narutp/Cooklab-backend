@@ -10,159 +10,80 @@ var mongoose = require('mongoose'),
   UserModel = mongoose.model('Users');
 
 module.exports = {
-  list_all_users: function(req, res) {
-    UserModel.find({}, function(err, user) {
-      if (err) {
-        res.send(err);
-      }
-      else {
-        res.json(user);
-      }
-    });
+  list_all_users: async (req, res) => {
+    let userResponse = await UserModel.find({})
+    res.json(userResponse)
   },
   
-  create_new_user: function(req, res) {
-    UserModel.find({username : req.body.username}, function (err, user) {
-      if (user.length){
-          res.json(true)
-      }else{
-        var new_user = new UserModel(req.body);
-        new_user.save(function(err, newuser) {
-          if (err) {
-            res.send(err);
-          }
-          else {
-            UserModel.find({_id : newuser._id}, function (err, newUser) {
-              if (err) {
-                res.send(err);
-              }
-              else { 
-                var hashedPassword = passwordHash.generate(newuser.password);
-                new_user.password = hashedPassword
-                new_user.save()
-                res.json(true);
-              }
-            })
-          }
-        });
-      }
-    })  
+  create_new_user: async (req, res) => {
+    let userResponse = await UserModel.find({username : req.body.username})
+    if (userResponse.length){
+      res.json(true)
+    }
+    let newUser = new UserModel(req.body);
+    await newUser.save()
+    userResponse = await UserModel.find({_id : newUser._id})
+    let hashedPassword = passwordHash.generate(newUser.password);
+    userResponse.password = hashedPassword
+    await userResponse.save()
+    res.json(true); 
   },
   
-  get_user: function(req, res) {
-    UserModel.findById(req.params.userId, function(err, user) {
-      if (err) {
-        res.send(err);
-      }
-      else {
-        res.json(user);
-      }
-    });
+  get_user: async (req, res) => {
+    let userResponse = await UserModel.findById(req.params.userId)
+    res.json(userResponse)
   },
   
-  update_user: function(req, res) {
-    UserModel.findOneAndUpdate({_id: req.body.userId}, req.body, {new: true}, function(err, user) {
-      if (err) {
-        res.send(err);
-      }
-      else {
-        res.json(user);
-      }
-    });
+  update_user: async (req, res) => {
+    let userResponse = await UserModel.findOneAndUpdate({_id: req.body.userId}, req.body, {new: true})
+    res.json(userResponse)
   },
   
-  delete_user: function(req, res) {
-    UserModel.remove({_id: req.body.userId}, function(err, user) {
-      if (err) {
-        res.send(err);
-      }
-      else {
-        res.json({ message: 'User successfully deleted' });
-      }
-    });
+  delete_user: async (req, res) => {
+    let userResponse = await UserModel.remove({_id: req.body.userId})
+    res.json({ message: 'User successfully deleted' })
   },
   
-  follow_user: function(req, res) {
-    UserModel.findOne({_id: req.body.userId}, function(err, user) {
-      if (err) {
-        res.send(err);
-      }
-      else {
-        console.log(user)
-        user.followings.push(req.body.targetId)
-        user.save()
-      }
-    });
-    UserModel.findOne({_id: req.body.targetId}, function(err, targetUser) {
-      if (err) {
-        res.send(err);
-      }
-      else {
-        targetUser.fans.push(req.body.userId)
-        targetUser.save()
-        res.json(targetUser)
-      }
-    });
+  follow_user: async (req, res) => {
+    let userResponse = await UserModel.findOne({_id: req.body.userId})
+    userResponse.followings.push(req.body.targetId)
+    await userResponse.save()
+    let targetUserResponse = await UserModel.findOne({_id: req.body.targetId})
+    targetUserResponse.fans.push(req.body.userId)
+    await targetUserResponse.save()
+    res.json(targetUserResponse)
   },
   
-  unfollow_user: function(req, res) {
-    UserModel.findOne({_id: req.body.userId}, function(err, user) {
-      if (err) {
-        res.send(err);
-      }
-      else {
-        var index = user.followings.indexOf(req.body.targetId)
-        if (index > -1) {
-          user.followings.splice(index, 1);
-        }
-        user.save()
-      }
-    });
-    UserModel.findOne({_id: req.body.targetId}, function(err, targetUser) {
-      if (err) {
-        res.send(err);
-      }
-      else {
-        var index = targetUser.fans.indexOf(req.body.userId)
-        if (index > -1) {
-          targetUser.fans.splice(index, 1);
-        }
-        targetUser.save()
-        res.json(targetUser)
-      }
-    });
+  unfollow_user: async (req, res) => {
+    let userResponse = await UserModel.findOne({_id: req.body.userId})
+    let index = userResponse.followings.indexOf(req.body.targetId)
+    if (index > -1) {
+      userResponse.followings.splice(index, 1);
+    }
+    await userResponse.save()
+    let targetUserResponse = await UserModel.findOne({_id: req.body.targetId})
+    index = targetUserResponse.fans.indexOf(req.body.userId)
+    if (index > -1) {
+      targetUserResponse.fans.splice(index, 1);
+    }
+    await targetUserResponse.save()
+    res.json(targetUserResponse)
   },
   
-  login_by_username_and_password: function(req, res) {
-    UserModel.findOne({username: req.body.username}, function(err, user) {
-      if(err) {
-        res.send(err)
-      }
-      else {
-        let password = user.password
-        let result = passwordHash.verify(req.body.password, password);
-        res.json(result)
-      }
-    });
+  login_by_username_and_password: async (req, res) => {
+    let userResponse = await UserModel.findOne({username: req.body.username})
+    let password = userResponse.password
+    let result = passwordHash.verify(req.body.password, password);
+    res.json(result)
   },
   
-  delete_all_user: function(req, res) {
-    UserModel.remove({}, function(err,user) {
-      if (err) {
-        console.log(err)
-      } else {
-        res.end('success');
-      }
-    });
+  delete_all_user: async (req, res) => {
+    let userResponse = await UserModel.remove({})
+    res.end('success');
   },
   
-  get_id_user_by_username: function(req, res) {
-    UserModel.findOne({username: req.query.username}, function(err, user) {
-      if (err) {
-        console.log(err)
-      } else {
-        res.json(user._id);
-      }
-    })
+  get_id_user_by_username: async (req, res) => {
+    let userResponse = await UserModel.findOne({username: req.query.username})
+    res.json(userResponse._id);
   }
 }

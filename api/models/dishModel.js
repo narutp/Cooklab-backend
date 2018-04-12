@@ -12,11 +12,7 @@ var DishSchema = new Schema({
   },
   level: {
     type: String,
-    enum: ['beginner', 'intermediate', 'senior', 'expert']
-  },
-  exp: {
-    type: Number,
-    default: 0
+    enum: ['1','2','3','4','5']
   },
   rate: {
     type: Number,
@@ -29,10 +25,12 @@ var DishSchema = new Schema({
     type: String
   },
   recipe: {
-    type: String
+    type: Array,
+    default: []
   },
   ingredients: {
-    type: Array
+    type: Array,
+    default: []
   },
   tags: {
     type: Array,
