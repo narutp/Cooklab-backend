@@ -20,7 +20,7 @@ var UserSchema = new Schema({
   },
   rank: {
     type: String,
-    enum: ['1', '2', '3', '4','5'],
+    enum: ['1','2','3','4','5','6','7','8','9','10'],
     default: '1'
   },
   username: {

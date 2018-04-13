@@ -32,7 +32,48 @@ module.exports = {
   },
   
   create_new_post: async (req, res) => {
-    var newPost = await new PostModel(req.body).save()
+    let newPost = await new PostModel(req.body).save()
+    let dishResponse = await DishModel.findById(newPost.id_dish)
+    if (dishResponse.type == 'mydish') {
+      let dishLevel = dishResponse.level
+      let exp, limit
+      if (dishLevel == '1')
+        exp = 10
+      else if (dishLevel == '2')
+        exp = 15
+      else if (dishLevel == '3')
+        exp = 25
+      else if (dishLevel == '4')
+        exp = 40
+      else
+        exp = 60
+      let userResponse = await UserModel.findById(newPost.id_user)
+      userResponse.experience += exp
+      await userResponse.save()
+      // let userRank = userResponse.rank
+      let userExp = userResponse.exp
+      if (userExp >= 10000)
+        userResponse.rank = '10'
+      else if (userExp >= 5000)
+        userResponse.rank = '9'
+      else if (userExp >= 2500)
+        userResponse.rank = '8'
+      else if (userExp >= 1000)
+        userResponse.rank = '7'
+      else if (userExp >= 500)
+        userResponse.rank = '6'
+      else if (userExp >= 300)
+        userResponse.rank = '5'
+      else if (userExp >= 150)
+        userResponse.rank = '4'
+      else if (userExp >= 80)
+        userResponse.rank = '3'
+      else if (userExp >= 40)
+        userResponse.rank = '2'
+      else
+        userResponse.rank = '1'
+      await userResponse.save()
+    }
     res.json(newPost)
   },
   
@@ -97,19 +138,35 @@ module.exports = {
     followings_arr.push(req.query.userId)
     let postResponse = await PostModel.find({id_user: {$in: followings_arr}})
     let idUserFromPost = postResponse.map((post) => {
-        return post.id_user
+      return post.id_user
     })
     let usernameResponse = await UserModel.find({_id: {$in: idUserFromPost}})
     let returnResponse = []
+    let idUserFromCommentResponse, userNameFromCommentResponse
     for(let i = 0; i< postResponse.length; i++) {
       let user = usernameResponse.filter((user) => {
         return postResponse[i].id_user == user._id
       })[0]
+      
+      idUserFromCommentResponse = await CommentModel.find({_id: {$in: postResponse[i].comments}}, 'id_user')
+      let idUserFromComment = idUserFromCommentResponse.map((user) => {
+        return user.id_user
+      })
+      userNameFromCommentResponse = await UserModel.find({_id: {$in: idUserFromComment}}, 'name') 
+      //หา name ของ userFromComment แบบข้างบน
       let name = user.name
       let status = (postResponse[i].trophy_list.indexOf(req.query.userId) > -1)
+      let commentArr = [], comment
+      for (let j = 0; j< userNameFromCommentResponse.length; j++) {
+        comment = {
+          id_user: userNameFromCommentResponse[j]._id,
+          name: userNameFromCommentResponse[j].name
+        }
+        commentArr.push(comment)
+      }
       let postDetail = {
         trophies: postResponse[i].trophies,
-        comments: postResponse[i].comments,
+        comments: commentArr,
         trophy_list: postResponse[i].trophy_list,
         timestamp: postResponse[i].timestamp,
         _id: postResponse[i]._id,

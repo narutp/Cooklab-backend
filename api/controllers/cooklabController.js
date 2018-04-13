@@ -10,58 +10,31 @@ var mongoose = require('mongoose'),
   PostModel = mongoose.model('Posts'),
   UserModel = mongoose.model('Users');
 
-exports.list_all_achievements = function(req, res) {
-  AchievementModel.find({}, function(err, achievement) {
-    if (err) {
-      res.send(err);
-    }
-    else {
-      res.json(achievement);
-    }
-  });
-};
+module.exports = {
+  list_all_achievements: async (req, res) => {
+    let achievementResponse = await AchievementModel.find({})
+    res.json(achievementResponse)
+  },
 
-exports.create_new_achievement = function(req, res) {
-  var new_achievement = new AchievementModel(req.body);
-  new_achievement.save(function(err, achievement) {
-    if (err) {
-      res.send(err);
-    }
-    else {
-      res.json(achievement);
-    }
-  });
-};
+  create_new_achievement: async (req, res) => {
+    let newAchievement = await new AchievementModel(req.body).save()
+    res.json(newAchievement)
+  },
 
-exports.get_achievement = function(req, res) {
-  AchievementModel.findById(req.params.achievementId, function(err, achievement) {
-    if (err) {
-      res.send(err);
-    }
-    else {
-      res.json(achievement);
-    }
-  });
-};
+  get_achievement: async (req, res) => {
+    let achievementResponse = await AchievementModel.findById(req.params.achievementId)
+    res.json(achievementResponse)
+  },
 
-exports.update_achievement = function(req, res) {
-  AchievementModel.findOneAndUpdate({_id: req.body.achievementId}, req.body, {new: true}, function(err, achievement) {
-    if (err) {
-      res.send(err);
-    }
-    else {
-      res.json(achievement);
-    }
-  });
-};
+  update_achievement: async (req, res) => {
+    let achievementResponse = await AchievementModel.findOneAndUpdate({_id: req.body.achievementId}, req.body, {new: true})
+    res.json(achievementResponse)
+  },
 
-exports.delete_achievement = function(req, res) {
-  AchievementModel.remove({_id: req.body.achievementId}, function(err, achievement) {
-    if (err) {
-      res.send(err);
-    }
-    else {
-      res.json({ message: 'Achievement successfully deleted' });
-    }
-  });
-};
+  delete_achievement: async (req, res) => {
+    let achievementResponse = await AchievementModel.remove({_id: req.body.achievementId})
+    res.json({ message: 'Achievement successfully deleted' })
+  },
+
+  
+}
