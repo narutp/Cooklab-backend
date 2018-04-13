@@ -165,11 +165,14 @@ module.exports = {
       let status = (postResponse[i].trophy_list.indexOf(req.query.userId) > -1)
       let commentArr = [], comment
       for (let j = 0; j< userNameFromCommentResponse.length; j++) {
+        let image = userNameFromCommentResponse[j].image
         let text = commentResponse[j].text
+        
         comment = {
           id_user: userNameFromCommentResponse[j]._id,
           name: userNameFromCommentResponse[j].name,
-          text: text
+          text: text,
+          image: image
         }
         commentArr.push(comment)
       }

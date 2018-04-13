@@ -22,8 +22,10 @@ module.exports = {
   
   create_new_dish: async (req, res) => {
     let newDish =  new DishModel(req.body)
-    newDish.recipe = req.body.recipe_str.split("\n")
-    newDish.ingredients = req.body.ingredients_str.split("\n")
+    if (recipe_str != '' && ingredients_str != '') {
+      newDish.recipe = req.body.recipe_str.split("\n")
+      newDish.ingredients = req.body.ingredients_str.split("\n")
+    }
     await newDish.save()
     res.json(newDish)
   },
