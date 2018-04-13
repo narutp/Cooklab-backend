@@ -70,9 +70,11 @@ module.exports = function(app) {
     .get(posting.get_images_posts_by_user_id);
 
   app.route('/users/:userId')
-    .get(user.get_user)
     .put(user.update_user)
     .delete(user.delete_user);
+
+  app.route('/get_user')
+    .get(user.get_user)
 
   app.route('/follow')
     .put(user.follow_user);

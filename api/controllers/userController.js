@@ -30,7 +30,7 @@ module.exports = {
   },
   
   get_user: async (req, res) => {
-    let userResponse = await UserModel.findById(req.params.userId)
+    let userResponse = await UserModel.findById(req.query.userId)
     res.json(userResponse)
   },
   
