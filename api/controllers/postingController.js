@@ -19,7 +19,7 @@ module.exports = {
   
   list_all_posts: async (req, res) => {
     let postResponse = await PostModel.find({})
-    res.json(post)
+    res.json(postResponse)
   },
   
   create_new_comment: async (req, res) => {
