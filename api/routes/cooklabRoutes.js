@@ -69,9 +69,11 @@ module.exports = function(app) {
   app.route('/posts/userId/:userId')
     .get(posting.get_images_posts_by_user_id);
 
-  app.route('/users/:userId')
-    .put(user.update_user)
+  app.route('/users')
     .delete(user.delete_user);
+
+  app.route('/update_user')
+    .put(user.update_user);
 
   app.route('/get_user')
     .get(user.get_user)
