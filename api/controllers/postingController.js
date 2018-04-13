@@ -145,8 +145,9 @@ module.exports = {
     })
     let usernameResponse = await UserModel.find({_id: {$in: idUserFromPost}})
     let returnResponse = []
-    let idUserFromCommentResponse, userNameFromCommentResponse = []
+    let idUserFromCommentResponse
     for(let i = 0; i< postResponse.length; i++) {
+      let userNameFromCommentResponse = []
       let user = usernameResponse.filter((user) => {
         return postResponse[i].id_user == user._id
       })[0]
@@ -164,6 +165,12 @@ module.exports = {
       let name = user.name
       let status = (postResponse[i].trophy_list.indexOf(req.query.userId) > -1)
       let commentArr = [], comment
+
+      if (postResponse[i]._id == '5ad1157ed9b26d3ac0222942') {
+        console.log("KUY")
+        console.log(userNameFromCommentResponse.length)
+      }
+
       for (let j = 0; j< userNameFromCommentResponse.length; j++) {
         let image = userNameFromCommentResponse[j].image
         let text = commentResponse[j].text
