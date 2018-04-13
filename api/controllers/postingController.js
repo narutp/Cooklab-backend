@@ -148,19 +148,21 @@ module.exports = {
         return postResponse[i].id_user == user._id
       })[0]
       
-      idUserFromCommentResponse = await CommentModel.find({_id: {$in: postResponse[i].comments}}, 'id_user')
-      let idUserFromComment = idUserFromCommentResponse.map((user) => {
-        return user.id_user
+      let commentResponse = await CommentModel.find({_id: {$in: postResponse[i].comments}})
+      let idUserFromComment = commentResponse.map((comment) => {
+        return comment.id_user
       })
-      userNameFromCommentResponse = await UserModel.find({_id: {$in: idUserFromComment}}, 'name') 
+      let userNameFromCommentResponse = await UserModel.find({_id: {$in: idUserFromComment}}, 'name') 
       //หา name ของ userFromComment แบบข้างบน
       let name = user.name
       let status = (postResponse[i].trophy_list.indexOf(req.query.userId) > -1)
       let commentArr = [], comment
       for (let j = 0; j< userNameFromCommentResponse.length; j++) {
+        let text = commentResponse[j].text
         comment = {
           id_user: userNameFromCommentResponse[j]._id,
-          name: userNameFromCommentResponse[j].name
+          name: userNameFromCommentResponse[j].name,
+          text: text
         }
         commentArr.push(comment)
       }
