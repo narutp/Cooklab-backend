@@ -23,6 +23,9 @@ module.exports = {
   },
   
   create_new_comment: async (req, res) => {
+    if (req.body.text == "") {
+      res.json(false)
+    }
     let newComment = new CommentModel(req.body)
     await newComment.save()
     let postResponse = await PostModel.findOne({_id: newComment.id_post})
