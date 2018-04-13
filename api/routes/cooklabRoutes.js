@@ -103,7 +103,7 @@ module.exports = function(app) {
   app.route('/delete_all_post')
     .delete(posting.delete_all_post);
 
-  app.route('/get_user')
+  app.route('/get_user_id')
     .get(user.get_id_user_by_username);
 
 };
