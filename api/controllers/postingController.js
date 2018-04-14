@@ -160,8 +160,6 @@ module.exports = {
         userNameFromCommentResponse.push(userResponse)
       }
       
-      // let userNameFromCommentResponse = await UserModel.find({_id: {$in: idUserFromComment}}, 'name') 
-      //หา name ของ userFromComment แบบข้างบน
       let name = user.name
       let status = (postResponse[i].trophy_list.indexOf(req.query.userId) > -1)
       let commentArr = [], comment

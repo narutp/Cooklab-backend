@@ -24,7 +24,7 @@ module.exports = {
     let newDish =  new DishModel(req.body)
     if (req.body.type == 'mydish') {
       newDish.recipe = req.body.recipe_str.split("\n")
-      newDish.ingredients = req.body.ingredients_str.split("\n")
+      newDish.ingredients = req.body.ingredient_str.split("\n")
     }
     await newDish.save()
     return res.json(newDish)
