@@ -36,17 +36,17 @@ module.exports = {
   },
   
   get_dish: async (req, res) => {
-    let dishResponse = await DishModel.findById(req.params.dishId)
+    let dishResponse = await DishModel.findById(req.query.dishId)
     res.json(dishResponse)
   },
   
   get_ingredient: async (req, res) => {
-    let ingredientResponse = await IngredientModel.findById(req.params.ingredientId)
+    let ingredientResponse = await IngredientModel.findById(req.query.ingredientId)
     res.json(ingredientResponse)
   },
   
   update_dish: async (req, res) => {
-    let dishResponse = await DishModel.findOneAndUpdate({_id: req.params.dishId}, req.body, {new: true})
+    let dishResponse = await DishModel.findOneAndUpdate({_id: req.body.dishId}, req.body, {new: true})
     res.json(dishResponse)
   },
   
@@ -56,12 +56,12 @@ module.exports = {
   },
   
   delete_dish: async (req, res) => {
-    let dishResponse = await DishModel.remove({_id: req.params.dishId})
+    let dishResponse = await DishModel.remove({_id: req.query.dishId})
     res.json('Delete successful')
   },
   
   delete_ingredient: async (req, res) => {
-    let ingredientResponse = await IngredientModel.remove({_id: req.params.ingredientId})
+    let ingredientResponse = await IngredientModel.remove({_id: req.query.ingredientId})
     res.json('Delete successful')
   },
 

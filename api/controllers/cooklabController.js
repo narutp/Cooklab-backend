@@ -22,7 +22,7 @@ module.exports = {
   },
 
   get_achievement: async (req, res) => {
-    let achievementResponse = await AchievementModel.findById(req.params.achievementId)
+    let achievementResponse = await AchievementModel.findById(req.query.achievementId)
     res.json(achievementResponse)
   },
 

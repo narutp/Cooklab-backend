@@ -81,17 +81,17 @@ module.exports = {
   },
   
   get_comment: async (req, res) => {
-    let commentResponse = await CommentModel.findById(req.params.commentId)
+    let commentResponse = await CommentModel.findById(req.query.commentId)
     res.json(commentResponse)
   },
   
   get_post_by_post_id: async (req, res) => {
-    let postResponse = await PostModel.findById(req.params.postId)
+    let postResponse = await PostModel.findById(req.query.postId)
     res.json(postResponse)
   },
   
   get_images_posts_by_user_id: async (req, res) => {
-    let postResponse = await PostModel.find({'id_user': req.params.userId},'id_dish')
+    let postResponse = await PostModel.find({'id_user': req.query.userId},'id_dish')
     let idDishFromPost = postResponse.map((post) => {
       return post.id_dish
     })

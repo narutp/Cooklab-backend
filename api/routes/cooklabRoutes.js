@@ -9,6 +9,8 @@ module.exports = function(app) {
 
   app.route('/achievements')
     .get(cooklab.list_all_achievements)
+
+  app.route('/create_achievement')
     .post(cooklab.create_new_achievement);
 
   app.route('/comments')
@@ -41,29 +43,49 @@ module.exports = function(app) {
   app.route('/create_user')
     .post(user.create_new_user);
 
-  app.route('/achievements/:achievementId')
+  app.route('/get_achievement')
     .get(cooklab.get_achievement)
+
+  app.route('/update_achievement')
     .put(cooklab.update_achievement)
+
+  app.route('/delete_achievement')
     .delete(cooklab.delete_achievement);
 
-  app.route('/comments/:commentId')
+  app.route('/get_comment')
     .get(posting.get_comment)
+
+  app.route('/update_comment')
     .put(posting.update_comment)
+
+  app.route('/delete_comment')
     .delete(posting.delete_comment);
 
-  app.route('/dishes/:dishId')
+  app.route('/get_dish')
     .get(dish.get_dish)
+
+  app.route('/update_dish')
     .put(dish.update_dish)
+
+  app.route('delete_dish')
     .delete(dish.delete_dish); 
     
-  app.route('/ingredients/:ingredientId')
-    .get(dish.get_ingredient)
+  app.route('/update_ingredient')
     .put(dish.update_ingredient)
-    .delete(dish.delete_ingredient);
 
-  app.route('/posts/:postId')
+  app.route('/get_ingredient')
+    .get(dish.get_ingredient)
+
+  app.route('/delete_ingredient')
+    .delete(dish.delete_ingredient)
+
+  app.route('/get_post')
     .get(posting.get_post_by_post_id)
+   
+  app.route('/update_post')  
     .put(posting.update_post)
+
+  app.route('/delete_post')
     .delete(posting.delete_post);
 
   app.route('/posts/userId/:userId')
@@ -107,5 +129,7 @@ module.exports = function(app) {
 
   app.route('/get_user_id')
     .get(user.get_id_user_by_username);
+
+  app.route('/search_user')
 
 };
