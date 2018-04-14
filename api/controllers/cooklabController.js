@@ -1,6 +1,7 @@
 'use strict';
 var passwordHash = require('password-hash');
 var _ = require('lodash');
+var Compare = require('../util/compare');
 
 var mongoose = require('mongoose'),
   AchievementModel = mongoose.model('Achievements'),
@@ -59,7 +60,65 @@ module.exports = {
       returnResponse.push(dishResult)
     }
     return res.json(returnResponse)
+  },
+
+  get_most_post_user: async (req, res) => {
+    let userResponse = await UserModel.find({},'name photo')
+    let idUserFromResponse = userResponse.map((user) => {
+      return user._id
+    })
+    let countList = []
+    for (let i=0; i<idUserFromResponse.length; i++) {
+      let count = 0
+      let postResponse = await PostModel.find({id_user: idUserFromResponse[i] },'id_dish')
+      let idDishFromPost = postResponse.map((post) => {
+        return post.id_dish
+      })
+      let dishResponse = await DishModel.find({_id: {$in: idDishFromPost}}, 'type')
+      for (let j=0; j<dishResponse.length; j++) {
+        if (dishResponse[j].type == 'mydish') {
+          count++
+        }
+      }
+      countList.push({
+        id_user: idUserFromResponse[i],
+        count: count,
+        name: userResponse[i].name,
+        image: userResponse[i].photo
+      })
+    }
+    countList.sort(Compare.compareByCount)
+    return res.json(countList)
   }
+
+  // get_most_trophy_user: async (req, res) => {
+  //   let userResponse = await UserModel.find({},'name photo')
+  //   let idUserFromResponse = userResponse.map((user) => {
+  //     return user._id
+  //   })
+  //   let countList = []
+  //   for (let i=0; i<idUserFromResponse.length; i++) {
+  //     let count = 0
+  //     let postResponse = await PostModel.find({id_user: idUserFromResponse[i] },'id_dish')
+  //     let idDishFromPost = postResponse.map((post) => {
+  //       return post.id_dish
+  //     })
+  //     let dishResponse = await DishModel.find({_id: {$in: idDishFromPost}}, 'type')
+  //     for (let j=0; j<dishResponse.length; j++) {
+  //       if (dishResponse[j].type == 'mydish') {
+  //         count++
+  //       }
+  //     }
+  //     countList.push({
+  //       id_user: idUserFromResponse[i],
+  //       count: count,
+  //       name: userResponse[i].name,
+  //       image: userResponse[i].photo
+  //     })
+  //   }
+  //   countList.sort(Compare.compareByCount)
+  //   return res.json(countList)
+  // }
 
   
 }

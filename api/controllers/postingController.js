@@ -191,7 +191,7 @@ module.exports = {
       }
       returnResponse.push(postDetail)
     }
-    returnResponse.sort(Compare.compare)
+    returnResponse.sort(Compare.compareByDate)
     return res.json(returnResponse)
   },
   

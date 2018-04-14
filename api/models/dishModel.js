@@ -18,6 +18,10 @@ var DishSchema = new Schema({
     type: Number,
     default: 0
   },
+  rate_list: {
+    type: Array,
+    default: []  
+  },
   calories: {
     type: Number
   },

@@ -135,4 +135,10 @@ module.exports = function(app) {
 
   app.route('/search')
     .get(cooklab.search)
+
+  app.route('/get_most_post')
+    .get(cooklab.get_most_post_user)
+
+  // app.route('/get_most_trophy')
+  //   .get(cooklab.get_most_trophy_user)
 };
