@@ -95,7 +95,7 @@ module.exports = {
       user_id: req.body.user_id,
     }
     dishResponse.rate_list.push(rating)
-    let totalRate
+    let totalRate = 0
     dishResponse.rate_list.forEach((rate) => {
       totalRate += rate.rate
     })
