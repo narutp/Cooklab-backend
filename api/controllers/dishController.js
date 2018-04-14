@@ -73,5 +73,57 @@ module.exports = {
   delete_all_ingredient: async (req, res) => {
     let ingredientResponse = await IngredientModel.remove({})
     return res.json('Delete all ingredient successful')
+  },
+
+  rate_dish_by_id_user: async (req, res) => {
+    let dishResponse = await DishModel.findOne({_id: req.body.dish_id})
+    let index = -1
+    index = dishResponse.rate_list.findIndex((data) => {
+      return data.user_id === req.body.user_id
+    })
+    // for (let i=0; i<dishResponse.rate_list.length; i++) {
+    //   if (dishResponse.rate_list[i].user_id == req.body.user_id) {
+    //     index = i
+    //     break
+    //   }
+    // }
+    if (index > -1) {
+      dishResponse.rate_list.splice(index, 1)
+    }
+    let rating = {
+      rate: req.body.rate,
+      user_id: req.body.user_id,
+    }
+    dishResponse.rate_list.push(rating)
+    let totalRate
+    dishResponse.rate_list.forEach((rate) => {
+      totalRate += rate.rate
+    })
+    let newRate = totalRate/dishResponse.rate_list.length
+    if (newRate >= 4.75) {
+      dishResponse.rate = 5
+    } else if (newRate >= 4.25) {
+      dishResponse.rate = 4.5
+    } else if (newRate >= 3.75) {
+        dishResponse.rate = 4
+    } else if (newRate >= 3.25) {
+      dishResponse.rate = 3.5
+    } else if (newRate >= 2.75) {
+      dishResponse.rate = 3
+    } else if (newRate >= 2.25) {
+      dishResponse.rate = 2.5
+    } else if (newRate >= 1.75) {
+      dishResponse.rate = 2
+    } else if (newRate >= 1.25) {
+      dishResponse.rate = 1.5
+    } else if (newRate >= 0.75) {
+      dishResponse.rate = 1
+    } else if (newRate >= 0.25) {
+      dishResponse.rate = 0.5
+    } else {
+      dishResponse.rate = 0
+    }
+    await dishResponse.save()
+    return res.json(dishResponse)
   }
 }

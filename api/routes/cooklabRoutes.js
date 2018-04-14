@@ -139,6 +139,10 @@ module.exports = function(app) {
   app.route('/get_most_post')
     .get(cooklab.get_most_post_user)
 
+  app.route('/rate_dish')
+    .put(dish.rate_dish_by_id_user)
+    
+
   // app.route('/get_most_trophy')
   //   .get(cooklab.get_most_trophy_user)
 };
