@@ -21,7 +21,7 @@ module.exports = {
     let usernameFromResponse = userResponse.map((user) => {
       return user.username
     })
-    if (usernameFromResponse.indexOf(req.body.username) <= -1){
+    if (usernameFromResponse.indexOf(req.body.username) > -1){
       return res.json(false)
     }
     let newUser = new UserModel(req.body);
