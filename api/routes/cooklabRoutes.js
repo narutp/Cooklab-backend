@@ -118,8 +118,11 @@ module.exports = function(app) {
   app.route('/decrease_trophy')
     .put(posting.decrease_trophy)
 
-  app.route('/login')
+  app.route('/login_by_username')
     .post(user.login_by_username_and_password)
+
+  app.route('login_with_facebook')
+    .post(user.login_with_facebook)
 
   app.route('/delete_all_user')
     .delete(user.delete_all_user)
@@ -129,4 +132,7 @@ module.exports = function(app) {
 
   app.route('/get_user_id')
     .get(user.get_id_user_by_username)
+
+  app.route('/search')
+    .get(cooklab.search)
 };

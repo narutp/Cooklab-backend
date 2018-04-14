@@ -14,24 +14,24 @@ module.exports = {
 
   list_all_comments: async (req, res) => {
     let commentResponse = await CommentModel.find({})
-    res.json(commentResponse)
+    return res.json(commentResponse)
   },
   
   list_all_posts: async (req, res) => {
     let postResponse = await PostModel.find({})
-    res.json(postResponse)
+    return res.json(postResponse)
   },
   
   create_new_comment: async (req, res) => {
     if (req.body.text == "") {
-      res.json(false)
+      return res.json(false)
     }
     let newComment = new CommentModel(req.body)
     await newComment.save()
     let postResponse = await PostModel.findOne({_id: newComment.id_post})
     postResponse.comments.push(newComment._id)
     await postResponse.save()
-    res.json(newComment)
+    return res.json(newComment)
   },
   
   create_new_post: async (req, res) => {
@@ -77,17 +77,17 @@ module.exports = {
         userResponse.rank = '1'
       await userResponse.save()
     }
-    res.json(newPost)
+    return res.json(newPost)
   },
   
   get_comment: async (req, res) => {
     let commentResponse = await CommentModel.findById(req.query.commentId)
-    res.json(commentResponse)
+    return res.json(commentResponse)
   },
   
   get_post_by_post_id: async (req, res) => {
     let postResponse = await PostModel.findById(req.query.postId)
-    res.json(postResponse)
+    return res.json(postResponse)
   },
   
   get_images_posts_by_user_id: async (req, res) => {
@@ -99,17 +99,17 @@ module.exports = {
     let imageFromDish = distResponse.map((dish) => {
       return dish.image
     })
-    res.json(imageFromDish)
+    return res.json(imageFromDish)
   },
   
   update_comment: async (req, res) => {
     let commentResponse = await CommentModel.findOneAndUpdate({_id: req.body.commentId}, req.body, {new: true})
-    res.json(commentResponse)
+    return res.json(commentResponse)
   },
   
   update_post: async (req, res) => {
     let postResponse = await PostModel.findOneAndUpdate({_id: req.body.postId}, req.body, {new: true})
-    res.json(postResponse)
+    return res.json(postResponse)
   },
   
   delete_comment: async (req, res) => {
@@ -122,7 +122,7 @@ module.exports = {
       postResponse.comments.splice(index, 1)
     }
     await postResponse.save()
-    res.json({ message: 'Comment successfully deleted' })
+    return res.json({ message: 'Comment successfully deleted' })
   },
   
   delete_post: async (req, res) => {
@@ -130,7 +130,7 @@ module.exports = {
     let commentFromPost = postResponse.comments
     postResponse = await PostModel.remove({_id: req.body.postId})    
     let commentResponse = await CommentModel.remove({_id: {$in: commentFromPost}})
-    res.json({ message: 'Post and comment successfully deleted' })
+    return res.json({ message: 'Post and comment successfully deleted' })
   },
   
   //Technically แล้ว มึงควรแก้ตั้งแต่ตอน Post ให้ query หา ชื่อ มาแปะ ใน .user (เปลี่ยน id_user เป็น user) แล้วข้างในเป็น JSON เก็บ id_user และ name
@@ -166,11 +166,6 @@ module.exports = {
       let status = (postResponse[i].trophy_list.indexOf(req.query.userId) > -1)
       let commentArr = [], comment
 
-      if (postResponse[i]._id == '5ad1157ed9b26d3ac0222942') {
-        console.log("KUY")
-        console.log(userNameFromCommentResponse.length)
-      }
-
       for (let j = 0; j< userNameFromCommentResponse.length; j++) {
         let image = userNameFromCommentResponse[j].image
         let text = commentResponse[j].text
@@ -199,38 +194,40 @@ module.exports = {
       returnResponse.push(postDetail)
     }
     returnResponse.sort(Compare.compare)
-    res.json(returnResponse)
+    return res.json(returnResponse)
   },
   
   get_top_feed: async (req, res) => {
     let postResponse = await PostModel.find({}).sort({'loves':-1}).limit(5).exec()
-    res.json(postResponse)
+    return res.json(postResponse)
   },
   
   increase_trophy: async (req, res) => {
     let postResponse = await PostModel.findOne({_id: req.body.postId})
-    if (postResponse.trophy_list.indexOf(req.body.userId) > -1)
-      res.json(post)
+    if (postResponse.trophy_list.indexOf(req.body.userId) > -1) {
+      return res.json(post)
+    }
     postResponse.trophies++
     postResponse.trophy_list.push(req.body.userId)
     await postResponse.save()
-    res.json(postResponse)
+    return res.json(postResponse)
   },
   
   decrease_trophy: async (req, res) => {
     let postResponse = await PostModel.findOne({_id: req.body.postId})
-    if (postResponse.trophy_list.indexOf(req.body.userId) <= -1)
-      res.json(postResponse)
-      postResponse.trophies--
+    if (postResponse.trophy_list.indexOf(req.body.userId) <= -1) {
+      return res.json(postResponse)
+    }
     let index = postResponse.trophy_list.indexOf(req.body.userId)
     postResponse.trophy_list.splice(index, 1)
+    postResponse.trophies--
     await postResponse.save()
-    res.json(postResponse)
+    return res.json(postResponse)
   },
 
   delete_all_post: async (req, res) => {
     let postResponse = await PostModel.remove({})
-    res.end('success');
+    return res.end('success');
   }
 }
 
