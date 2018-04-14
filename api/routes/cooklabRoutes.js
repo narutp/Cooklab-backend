@@ -121,7 +121,7 @@ module.exports = function(app) {
   app.route('/login_by_username')
     .post(user.login_by_username_and_password)
 
-  app.route('login_with_facebook')
+  app.route('/login_with_facebook')
     .post(user.login_with_facebook)
 
   app.route('/delete_all_user')
