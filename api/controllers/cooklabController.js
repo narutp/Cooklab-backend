@@ -40,7 +40,7 @@ module.exports = {
 
   search: async (req, res) => {
     let returnResponse = []
-    let userResponse = await UserModel.find({name: {"$regex": req.query.text}},'name photo')
+    let userResponse = await UserModel.find({name: {"$regex": req.query.text, $options: 'si'}},'name photo')
     for (let i=0; i<userResponse.length; i++) {
       let userResult = {
         _id: userResponse[i]._id,
@@ -50,7 +50,7 @@ module.exports = {
       }
       returnResponse.push(userResult)
     }
-    let dishResponse = await DishModel.find({name: {"$regex": req.query.text},type: 'mydish'},'name image')
+    let dishResponse = await DishModel.find({name: {"$regex": req.query.text, $options: 'si'},type: 'mydish'},'name image')
     for (let i=0; i<dishResponse.length; i++) {
       let dishResult = {
         _id: dishResponse[i]._id,
