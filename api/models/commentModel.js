@@ -15,7 +15,7 @@ var CommentSchema = new Schema({
   },
   timestamp: {
     type: Date,
-    default: Date.now
+    default: Moment().add(7,'hours')
   }
   
 });

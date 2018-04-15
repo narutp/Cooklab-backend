@@ -144,6 +144,7 @@ module.exports = {
   },
 
   get_most_rank_user: async (req,res) => {
+    console.log(Moment().add(7,'hours'))
     let userList = []
     if(req.query.user_id) {
       let followingResponse = await UserModel.findOne({_id: req.query.user_id}, 'followings')
