@@ -52,8 +52,10 @@ module.exports = {
         exp = 60
       let userResponse = await UserModel.findById(newPost.id_user)
       userResponse.experience += exp
+      if (userResponse.experience >= 10000) {
+        userResponse.experience = 10000
+      }
       await userResponse.save()
-      // let userRank = userResponse.rank
       let userExp = userResponse.exp
       if (userExp >= 10000)
         userResponse.rank = '10'

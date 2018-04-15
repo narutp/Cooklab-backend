@@ -81,12 +81,6 @@ module.exports = {
     index = dishResponse.rate_list.findIndex((data) => {
       return data.user_id === req.body.user_id
     })
-    // for (let i=0; i<dishResponse.rate_list.length; i++) {
-    //   if (dishResponse.rate_list[i].user_id == req.body.user_id) {
-    //     index = i
-    //     break
-    //   }
-    // }
     if (index > -1) {
       dishResponse.rate_list.splice(index, 1)
     }
