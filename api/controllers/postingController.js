@@ -228,6 +228,11 @@ module.exports = {
   delete_all_post: async (req, res) => {
     let postResponse = await PostModel.remove({})
     return res.end('success');
-  }
+  },
+
+  delete_all_comment: async (req, res) => {
+    let commentResponse = await CommentModel.remove({})
+    return res.end('success');
+  },
 }
 

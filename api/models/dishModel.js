@@ -14,6 +14,9 @@ var DishSchema = new Schema({
     type: String,
     enum: ['1','2','3','4','5']
   },
+  id_user: {
+    type: String,
+  },
   rate: {
     type: Number,
     default: 0

@@ -90,16 +90,64 @@ module.exports = {
     }
     countList.sort(Compare.compareByCount)
     return res.json(countList)
-  }
+  },
 
-  // เดี๋ยวทำ map reduce ต่อนาจา
-  // get_most_trophy_user: async (req, res) => {
-  //   console.log(Moment().toLocaleString())
-  //   let startTime = Moment().startOf('day').subtract(7,'hours')
-  //   let endTime = Moment().endOf('day').subtract(7,'hours')
-  //   let postResponse = await PostModel.find({}).where('timestamp').gt(startTime).lt(endTime).exec()
-    
-  //   return res.json(postResponse)
-  // }
+  get_most_post_user_by_user_id: async (req, res) => {
+    let userResponse = await UserModel.findOne({_id: req.query.user_id}, 'followings')
+    let followings = userResponse.followings
+    return res.json(true)
+  },
+
+  get_most_trophy_user: async (req, res) => {
+    console.log(Moment().toLocaleString())
+    let startTime = Moment().startOf('month').subtract(7,'hours')
+    let endTime = Moment().endOf('month').subtract(7,'hours')
+    let postResponse = await PostModel.find({}).where('timestamp').gt(startTime).lt(endTime).exec()
+    let userTrophy = []
+    // ตรองมาดูตรงนี้ 
+    for (let i=0; i<postResponse.length; i++) {
+      let post = postResponse[i]
+      let trophies = 0
+      let index = userTrophy.findIndex((data) => {
+        return data.user_id === post.id_user
+      })
+      if (index > -1) {
+        trophies = userTrophy[index].trophies
+        userTrophy.splice(index,1)
+      }
+      let userResponse = await UserModel.findOne({_id: post.id_user}, 'name photo')
+      trophies += post.trophies
+      let obj = {
+        user_id: post.id_user,
+        name: userResponse.name,
+        trophies: trophies,
+        image: userResponse.photo
+      }
+      userTrophy.push(obj)
+    }
+    userTrophy.sort(Compare.compareByTrophy)
+    return res.json(userTrophy)
+  },
+
+  get_most_trophy_user_by_user_id: async (req, res) => {
+    return res.json(true)
+  },
+
+  get_most_rank_user: async (req,res) => {
+    let userList = []
+    if(req.query.user_id) {
+      let followingResponse = await UserModel.findOne({_id: req.query.user_id}, 'followings')
+      let followings = followingResponse.followings
+      followings.push(req.query.user_id)
+      followingResponse = await UserModel.find({_id: {$in: followings}}, 'name photo experience')
+      userList = followingResponse
+    }
+    else {
+      let userResponse = await UserModel.find({}, 'name photo experience')
+      userList = userResponse
+    }
+    userList.sort(Compare.compareByExp)
+    return res.json(userList)
+  }
   
 }
