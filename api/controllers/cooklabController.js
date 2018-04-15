@@ -99,21 +99,21 @@ module.exports = {
   },
 
   get_most_trophy_user: async (req, res) => {
-    // let userList = []
-    // if(req.query.user_id) {
-    //   let followingResponse = await UserModel.findOne({_id: req.query.user_id}, 'followings')
-    //   let followings = followingResponse.followings
-    //   followings.push(req.query.user_id)
-    //   followingResponse = await UserModel.find({_id: {$in: followings}}, 'name photo experience')
-    //   userList = followingResponse
-    // } else {
-
-    // }
+    if(req.query.user_id) {
+      let followingResponse = await UserModel.findOne({_id: req.query.user_id}, 'followings')
+      let followings = followingResponse.followings
+      followings.push(req.query.user_id)
+      followingResponse = await UserModel.find({_id: {$in: followings}}, 'name photo experience')
+      userList = followingResponse
+    } else {
+      
+    }
     console.log(Moment().toLocaleString())
     let startTime = Moment().startOf('month').subtract(7,'hours')
     let endTime = Moment().endOf('month').subtract(7,'hours')
     let postResponse = await PostModel.find({}).where('timestamp').gt(startTime).lt(endTime).exec()
     let userTrophy = []
+    let userList = []
     // ตรองมาดูตรงนี้ 
     for (let i=0; i<postResponse.length; i++) {
       let post = postResponse[i]

@@ -1,5 +1,6 @@
 'use strict';
 var mongoose = require('mongoose');
+var Moment = require('moment')
 var Schema = mongoose.Schema;
 
 
@@ -19,7 +20,7 @@ var PostSchema = new Schema({
   },
   timestamp: {
     type: Date,
-    default: Date.now
+    default: Moment().add(7,'hours')
   },
   comments: {
     type: Array,
