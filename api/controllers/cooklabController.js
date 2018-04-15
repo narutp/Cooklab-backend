@@ -64,7 +64,17 @@ module.exports = {
   },
 
   get_most_post_user: async (req, res) => {
-    let userResponse = await UserModel.find({},'name photo')
+    let userList = []
+    let userResponse
+    if (req.query.user_id) {
+      let followingResponse = await UserModel.findOne({_id: req.query.user_id}, 'followings')
+      let followings = followingResponse.followings
+      followings.push(req.query.user_id)
+      userResponse = await UserModel.find({_id: {$in: followings}},'name photo')
+    }
+    else {
+      userResponse = await UserModel.find({},'name photo')
+    }
     let idUserFromResponse = userResponse.map((user) => {
       return user._id
     })
@@ -92,31 +102,25 @@ module.exports = {
     return res.json(countList)
   },
 
-  get_most_post_user_by_user_id: async (req, res) => {
-    let userResponse = await UserModel.findOne({_id: req.query.user_id}, 'followings')
-    let followings = userResponse.followings
-    return res.json(true)
-  },
-
   get_most_trophy_user: async (req, res) => {
-    if(req.query.user_id) {
+    let followings = []
+    if (req.query.user_id) {
       let followingResponse = await UserModel.findOne({_id: req.query.user_id}, 'followings')
-      let followings = followingResponse.followings
+      followings = followingResponse.followings
       followings.push(req.query.user_id)
-      followingResponse = await UserModel.find({_id: {$in: followings}}, 'name photo experience')
-      userList = followingResponse
-    } else {
-      
     }
-    console.log(Moment().toLocaleString())
     let startTime = Moment().startOf('month').subtract(7,'hours')
     let endTime = Moment().endOf('month').subtract(7,'hours')
     let postResponse = await PostModel.find({}).where('timestamp').gt(startTime).lt(endTime).exec()
     let userTrophy = []
-    let userList = []
     // ตรองมาดูตรงนี้ 
     for (let i=0; i<postResponse.length; i++) {
       let post = postResponse[i]
+      if (req.query.user_id) {
+        if (followings.indexOf(post.id_user) <= -1) {
+          continue
+        }
+      }
       let trophies = 0
       let index = userTrophy.findIndex((data) => {
         return data.user_id === post.id_user
@@ -137,10 +141,6 @@ module.exports = {
     }
     userTrophy.sort(Compare.compareByTrophy)
     return res.json(userTrophy)
-  },
-
-  get_most_trophy_user_by_user_id: async (req, res) => {
-    return res.json(true)
   },
 
   get_most_rank_user: async (req,res) => {

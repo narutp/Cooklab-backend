@@ -142,20 +142,11 @@ module.exports = function(app) {
   app.route('/get_most_post')
     .get(cooklab.get_most_post_user)
 
-  app.route('/get_most_post_user')
-    .get(cooklab.get_most_post_user_by_user_id)
-
   app.route('/get_most_trophy')
     .get(cooklab.get_most_trophy_user)
-    
-  app.route('/get_most_trophy_user')
-    .get(cooklab.get_most_trophy_user_by_user_id)
 
   app.route('/get_most_rank')
     .get(cooklab.get_most_rank_user)
-
-  // app.route('/get_most_rank_user')
-  //   .get(cooklab.get_most_rank_user_by_user_id)
 
   app.route('/delete_all_comment')
     .delete(posting.delete_all_comment)
