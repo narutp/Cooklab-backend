@@ -88,8 +88,8 @@ module.exports = function(app) {
   app.route('/delete_post')
     .delete(posting.delete_post)
 
-  app.route('/posts/userId/:userId')
-    .get(posting.get_images_posts_by_user_id)
+  app.route('/get_user_post')
+    .get(posting.get_image_post_by_user_id)
 
   app.route('/users')
     .delete(user.delete_user)

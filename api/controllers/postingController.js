@@ -102,16 +102,14 @@ module.exports = {
     return res.json(postResponse)
   },
   
-  get_images_posts_by_user_id: async (req, res) => {
-    let postResponse = await PostModel.find({'id_user': req.query.userId},'id_dish')
+  get_image_post_by_user_id: async (req, res) => {
+    let postResponse = await PostModel.find({ id_user: req.query.user_id},'id_dish')
+    console.log(postResponse)
     let idDishFromPost = postResponse.map((post) => {
       return post.id_dish
     })
-    let distResponse = await DishModel.find({_id: {$in: id_dish_arr}},'image')
-    let imageFromDish = distResponse.map((dish) => {
-      return dish.image
-    })
-    return res.json(imageFromDish)
+    let dishResponse = await DishModel.find({_id: {$in: idDishFromPost}},'image')
+    return res.json(dishResponse)
   },
   
   update_comment: async (req, res) => {
