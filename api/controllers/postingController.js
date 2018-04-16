@@ -199,6 +199,7 @@ module.exports = {
         image: postResponse[i].image,
         caption: postResponse[i].caption,
         user_name: user.name,
+        photo: user.photo,
         status: status
       }
       returnResponse.push(postDetail)
@@ -257,6 +258,7 @@ module.exports = {
         image: postResponse[i].image,
         caption: postResponse[i].caption,
         user_name: user.name,
+        photo: user.photo,
         status: status
       }
       returnResponse.push(postDetail)
