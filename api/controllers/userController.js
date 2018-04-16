@@ -50,6 +50,7 @@ module.exports = {
   follow_user: async (req, res) => {
     let userResponse = await UserModel.findOne({_id: req.body.userId})
     let index = userResponse.followings.indexOf(req.body.targetId)
+    let status
     if (index > -1) {
       userResponse.followings.splice(index, 1);
       await userResponse.save()
@@ -57,15 +58,17 @@ module.exports = {
       index = targetUserResponse.fans.indexOf(req.body.userId)
       targetUserResponse.fans.splice(index, 1);
       await targetUserResponse.save()
+      status = 'unfollow'
     } 
     else {
       userResponse.followings.push(req.body.targetId)
-    await userResponse.save()
-    let targetUserResponse = await UserModel.findOne({_id: req.body.targetId})
-    targetUserResponse.fans.push(req.body.userId)
-    await targetUserResponse.save()
+      await userResponse.save()
+      let targetUserResponse = await UserModel.findOne({_id: req.body.targetId})
+      targetUserResponse.fans.push(req.body.userId)
+      await targetUserResponse.save()
+      status = 'follow'
     }
-    return res.json(true)
+    return res.json(status)
   },
   
   login_by_username_and_password: async (req, res) => {
