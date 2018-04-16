@@ -103,9 +103,6 @@ module.exports = function(app) {
   app.route('/follow')
     .put(user.follow_user)
 
-  app.route('/unfollow')
-    .put(user.unfollow_user)
-
   app.route('/feeds')
     .get(posting.get_feeds_by_user_id)
 

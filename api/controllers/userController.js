@@ -49,27 +49,22 @@ module.exports = {
   
   follow_user: async (req, res) => {
     let userResponse = await UserModel.findOne({_id: req.body.userId})
-    userResponse.followings.push(req.body.targetId)
+    let index = userResponse.followings.indexOf(req.body.targetId)
+    if (index > -1) {
+      userResponse.followings.splice(index, 1);
+      await userResponse.save()
+      let targetUserResponse = await UserModel.findOne({_id: req.body.targetId})
+      index = targetUserResponse.fans.indexOf(req.body.userId)
+      targetUserResponse.fans.splice(index, 1);
+      await targetUserResponse.save()
+    } 
+    else {
+      userResponse.followings.push(req.body.targetId)
     await userResponse.save()
     let targetUserResponse = await UserModel.findOne({_id: req.body.targetId})
     targetUserResponse.fans.push(req.body.userId)
     await targetUserResponse.save()
-    return res.json(true)
-  },
-  
-  unfollow_user: async (req, res) => {
-    let userResponse = await UserModel.findOne({_id: req.body.userId})
-    let index = userResponse.followings.indexOf(req.body.targetId)
-    if (index > -1) {
-      userResponse.followings.splice(index, 1);
     }
-    await userResponse.save()
-    let targetUserResponse = await UserModel.findOne({_id: req.body.targetId})
-    index = targetUserResponse.fans.indexOf(req.body.userId)
-    if (index > -1) {
-      targetUserResponse.fans.splice(index, 1);
-    }
-    await targetUserResponse.save()
     return res.json(true)
   },
   
