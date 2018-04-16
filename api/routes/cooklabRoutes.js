@@ -67,7 +67,7 @@ module.exports = function(app) {
   app.route('/update_dish')
     .put(dish.update_dish)
 
-  app.route('delete_dish')
+  app.route('/delete_dish')
     .delete(dish.delete_dish)
     
   app.route('/update_ingredient')
@@ -153,4 +153,7 @@ module.exports = function(app) {
 
   app.route('/delete_all_dish')
     .delete(dish.delete_all_dish)
+
+  app.route('/get_trophy_dish')
+    .get(user.count_trophy_and_dish)
 };

@@ -3,7 +3,6 @@ var mongoose = require('mongoose');
 var Moment = require('moment')
 var Schema = mongoose.Schema;
 
-
 var PostSchema = new Schema({
   id_dish: {
     type: String,

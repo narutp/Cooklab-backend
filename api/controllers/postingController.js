@@ -1,6 +1,7 @@
 'use strict';
 var Compare = require('../util/compare');
 var passwordHash = require('password-hash');
+var Moment = require('moment')
 
 var mongoose = require('mongoose'),
   AchievementModel = mongoose.model('Achievements'),
@@ -23,6 +24,7 @@ module.exports = {
   },
   
   create_new_comment: async (req, res) => {
+    console.log(Moment().add(7,'hours'))
     if (req.body.text == "") {
       return res.json(false)
     }
@@ -137,6 +139,7 @@ module.exports = {
   
   delete_post: async (req, res) => {
     let postResponse = await PostModel.findOne({_id: req.body.postId},'comments')
+    console.log(postResponse.comments)
     let commentFromPost = postResponse.comments
     postResponse = await PostModel.remove({_id: req.body.postId})    
     let commentResponse = await CommentModel.remove({_id: {$in: commentFromPost}})

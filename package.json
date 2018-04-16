@@ -17,6 +17,7 @@
     "heroku": "^0.2.0",
     "lodash": "^4.17.5",
     "moment": "^2.22.0",
+    "moment-timezone": "^0.5.14",
     "mongoose": "^5.0.12",
     "password-hash": "^1.2.2"
   }

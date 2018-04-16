@@ -1,6 +1,7 @@
 'use strict';
 var passwordHash = require('password-hash')
 var Random = require('../util/random')
+var momentTz = require('moment-timezone');
 
 var mongoose = require('mongoose'),
   AchievementModel = mongoose.model('Achievements'),
@@ -102,5 +103,20 @@ module.exports = {
     newUser.password = hashedPassword
     await newUser.save()
     return res.json(true)
+  },
+
+  count_trophy_and_dish: async (req, res) => {
+    let countDish = await DishModel.count({id_user: req.query.user_id, type: 'mydish'})
+    let dishResponse = await DishModel.find({id_user: req.query.user_id})
+    let postResponse = await PostModel.find({id_dish: {$in: dishResponse._id}},'trophies')
+    let countTrophy = 0
+    postResponse.forEach((post) => {
+      countTrophy += post.trophies
+    })
+    let returnResponse = {
+      dish: countDish,
+      trophy: countTrophy
+    }
+    return res.json(returnResponse)
   }
 }
