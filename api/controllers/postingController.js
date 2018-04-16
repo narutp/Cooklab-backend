@@ -205,7 +205,7 @@ module.exports = {
       returnResponse.push(postDetail)
     }
     returnResponse.sort(Compare.compareByDate)
-    returnResponse.splice(10,returnResponse.length-10)
+    returnResponse.splice(15,returnResponse.length-15)
     return res.json(returnResponse)
   },
   
