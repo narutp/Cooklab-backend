@@ -70,10 +70,10 @@ module.exports = {
       let followingResponse = await UserModel.findOne({_id: req.query.user_id}, 'followings')
       let followings = followingResponse.followings
       followings.push(req.query.user_id)
-      userResponse = await UserModel.find({_id: {$in: followings}},'name photo')
+      userResponse = await UserModel.find({_id: {$in: followings}},'name photo rank')
     }
     else {
-      userResponse = await UserModel.find({},'name photo')
+      userResponse = await UserModel.find({},'name photo rank')
     }
     let idUserFromResponse = userResponse.map((user) => {
       return user._id
@@ -95,7 +95,8 @@ module.exports = {
         id_user: idUserFromResponse[i],
         count: count,
         name: userResponse[i].name,
-        image: userResponse[i].photo
+        image: userResponse[i].photo,
+        rank: userResponse[i].rank
       })
     }
     countList.sort(Compare.compareByCount)
@@ -129,13 +130,14 @@ module.exports = {
         trophies = userTrophy[index].trophies
         userTrophy.splice(index,1)
       }
-      let userResponse = await UserModel.findOne({_id: post.id_user}, 'name photo')
+      let userResponse = await UserModel.findOne({_id: post.id_user}, 'name photo rank')
       trophies += post.trophies
       let obj = {
         user_id: post.id_user,
         name: userResponse.name,
         trophies: trophies,
-        image: userResponse.photo
+        image: userResponse.photo,
+        rank: userResponse.rank
       }
       userTrophy.push(obj)
     }
@@ -149,11 +151,11 @@ module.exports = {
       let followingResponse = await UserModel.findOne({_id: req.query.user_id}, 'followings')
       let followings = followingResponse.followings
       followings.push(req.query.user_id)
-      followingResponse = await UserModel.find({_id: {$in: followings}}, 'name photo experience')
+      followingResponse = await UserModel.find({_id: {$in: followings}}, 'name photo experience rank')
       userList = followingResponse
     }
     else {
-      let userResponse = await UserModel.find({}, 'name photo experience')
+      let userResponse = await UserModel.find({}, 'name photo experience rank')
       userList = userResponse
     }
     userList.sort(Compare.compareByExp)
