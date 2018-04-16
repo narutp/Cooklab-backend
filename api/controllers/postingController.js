@@ -206,8 +206,62 @@ module.exports = {
   },
   
   get_top_feed: async (req, res) => {
-    let postResponse = await PostModel.find({}).sort({'loves':-1}).limit(5).exec()
-    return res.json(postResponse)
+    // let postResponse = await PostModel.find({}).sort({'loves':-1}).limit(5).exec()
+    // return res.json(postResponse)
+    let postResponse = await PostModel.find({}).sort({'trophies':-1}).limit(20).exec()
+    let idUserFromPost = postResponse.map((post) => {
+      return post.id_user
+    })
+    let usernameResponse = await UserModel.find({_id: {$in: idUserFromPost}})
+    let returnResponse = []
+    let idUserFromCommentResponse
+    for(let i = 0; i< postResponse.length; i++) {
+      let userNameFromCommentResponse = []
+      let user = usernameResponse.filter((user) => {
+        return postResponse[i].id_user == user._id
+      })[0]
+      let commentResponse = await CommentModel.find({_id: {$in: postResponse[i].comments}})
+      let idUserFromComment = commentResponse.map((comment) => {
+        return comment.id_user
+      })
+      for (let j = 0; j<idUserFromComment.length ; j++) {
+        let userResponse = await UserModel.findOne({_id: idUserFromComment[j]})
+        userNameFromCommentResponse.push(userResponse)
+      }
+      
+      let name = user.name
+      let status = (postResponse[i].trophy_list.indexOf(req.query.userId) > -1)
+      let commentArr = [], comment
+
+      for (let j = 0; j< userNameFromCommentResponse.length; j++) {
+        let image = userNameFromCommentResponse[j].image
+        let text = commentResponse[j].text
+        
+        comment = {
+          id_user: userNameFromCommentResponse[j]._id,
+          name: userNameFromCommentResponse[j].name,
+          text: text,
+          image: image
+        }
+        commentArr.push(comment)
+      }
+      let postDetail = {
+        trophies: postResponse[i].trophies,
+        comments: commentArr,
+        trophy_list: postResponse[i].trophy_list,
+        timestamp: postResponse[i].timestamp,
+        _id: postResponse[i]._id,
+        id_dish: postResponse[i].id_dish,
+        id_user: postResponse[i].id_user,
+        image: postResponse[i].image,
+        caption: postResponse[i].caption,
+        user_name: user.name,
+        status: status
+      }
+      returnResponse.push(postDetail)
+    }
+    returnResponse.sort(Compare.compareByTrophy)
+    return res.json(returnResponse)
   },
   
   increase_trophy: async (req, res) => {
