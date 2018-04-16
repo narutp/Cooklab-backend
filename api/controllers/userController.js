@@ -54,7 +54,7 @@ module.exports = {
     let targetUserResponse = await UserModel.findOne({_id: req.body.targetId})
     targetUserResponse.fans.push(req.body.userId)
     await targetUserResponse.save()
-    return res.json(targetUserResponse)
+    return res.json(true)
   },
   
   unfollow_user: async (req, res) => {
@@ -70,7 +70,7 @@ module.exports = {
       targetUserResponse.fans.splice(index, 1);
     }
     await targetUserResponse.save()
-    return res.json(targetUserResponse)
+    return res.json(true)
   },
   
   login_by_username_and_password: async (req, res) => {
