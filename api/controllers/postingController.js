@@ -139,7 +139,6 @@ module.exports = {
   
   delete_post: async (req, res) => {
     let postResponse = await PostModel.findOne({_id: req.body.postId},'comments')
-    console.log(postResponse.comments)
     let commentFromPost = postResponse.comments
     postResponse = await PostModel.remove({_id: req.body.postId})    
     let commentResponse = await CommentModel.remove({_id: {$in: commentFromPost}})
@@ -209,8 +208,6 @@ module.exports = {
   },
   
   get_top_feed: async (req, res) => {
-    // let postResponse = await PostModel.find({}).sort({'loves':-1}).limit(5).exec()
-    // return res.json(postResponse)
     let postResponse = await PostModel.find({}).sort({'trophies':-1}).limit(20).exec()
     let idUserFromPost = postResponse.map((post) => {
       return post.id_user
