@@ -7,16 +7,17 @@ var Schema = mongoose.Schema;
 var CommentSchema = new Schema({
   id_user: {
     type: String,
+    ref: 'Users'
   },
   id_post: {
     type: String,
+    ref: 'Posts'
   },
   text: {
     type: String,
   },
   timestamp: {
-    type: Date,
-    default: Moment().add(7,'hours')
+    type: Date
   }
   
 });

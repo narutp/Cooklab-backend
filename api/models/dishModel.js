@@ -16,6 +16,7 @@ var DishSchema = new Schema({
   },
   id_user: {
     type: String,
+    ref: 'Users'
   },
   rate: {
     type: Number,

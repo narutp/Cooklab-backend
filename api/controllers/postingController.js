@@ -28,6 +28,8 @@ module.exports = {
       return res.json(false)
     }
     let newComment = new CommentModel(req.body)
+    let timestamp = Moment().add(7,'hours')
+    newComment.timestamp = timestamp
     await newComment.save()
     let postResponse = await PostModel.findOne({_id: newComment.id_post})
     postResponse.comments.push(newComment._id)
@@ -36,7 +38,10 @@ module.exports = {
   },
   
   create_new_post: async (req, res) => {
-    let newPost = await new PostModel(req.body).save()
+    let newPost = new PostModel(req.body)
+    let timestamp = Moment().add(7,'hours')
+    newPost.timestamp = timestamp
+    await newPost.save()
     let dishResponse = await DishModel.findById(newPost.id_dish)
     if (dishResponse.type != 'normal') {
       let dishLevel = dishResponse.level
@@ -208,6 +213,16 @@ module.exports = {
   },
   
   get_top_feed: async (req, res) => {
+    // let postResponse = await PostModel.find({}).sort({'trophies':-1}).limit(20).exec()
+    // for(let i = 0; i< postResponse.length; i++) {
+    //   let commentResponse = await CommentModel.find({_id: {$in: postResponse[i].comments}}).populate('id_user')
+    //   console.log(commentResponse)
+
+    // }
+    // return res.json(true)
+    
+    
+    
     let postResponse = await PostModel.find({}).sort({'trophies':-1}).limit(20).exec()
     let idUserFromPost = postResponse.map((post) => {
       return post.id_user

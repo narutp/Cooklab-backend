@@ -9,6 +9,7 @@ var PostSchema = new Schema({
   },
   id_user: {
     type: String,
+    ref: 'Users'
   },
   caption: {
     type: String,
@@ -18,8 +19,7 @@ var PostSchema = new Schema({
     default: 0
   },
   timestamp: {
-    type: Date,
-    default: Moment().add(7,'hours')
+    type: Date
   },
   comments: {
     type: Array,
