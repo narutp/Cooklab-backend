@@ -298,5 +298,32 @@ module.exports = {
     let commentResponse = await CommentModel.remove({})
     return res.end('success');
   },
+
+  get_comment_by_post_id: async (req, res) => {
+    let returnResponse = []
+    let postResponse = await PostModel.findOne({_id: req.query.post_id}, 'comments')
+    let comments = postResponse.comments
+    let commentResponse = await CommentModel.find({_id: {$in: comments}})
+    let idUserFromComment = commentResponse.map((comment) => {
+      return comment.id_user
+    })
+    let nameList = []
+    let photoList = []
+    for (let i=0; i<idUserFromComment.length; i++) {
+      let userResponse = await UserModel.findOne({_id: idUserFromComment[i]}, 'name photo')
+      nameList.push(userResponse.name)
+      photoList.push(userResponse.photo)
+    }
+    for (let i=0; i<idUserFromComment.length; i++) {
+      let comment = {
+        id_user: idUserFromComment[i],
+        name: nameList[i],
+        image: photoList[i],
+        text: commentResponse[i].text
+      }
+      returnResponse.push(comment)
+    }
+    return res.json(returnResponse)
+  }
 }
 

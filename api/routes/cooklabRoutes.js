@@ -153,4 +153,7 @@ module.exports = function(app) {
 
   app.route('/get_trophy_dish')
     .get(user.count_trophy_and_dish)
+
+  app.route('/get_comment_by_post')
+    .get(posting.get_comment_by_post_id)
 };
