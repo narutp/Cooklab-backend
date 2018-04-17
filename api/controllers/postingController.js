@@ -176,7 +176,7 @@ module.exports = {
       let commentArr = [], comment
 
       for (let j = 0; j< userNameFromCommentResponse.length; j++) {
-        let image = userNameFromCommentResponse[j].image
+        let image = userNameFromCommentResponse[j].photo
         let text = commentResponse[j].text
         
         comment = {
@@ -235,7 +235,7 @@ module.exports = {
       let commentArr = [], comment
 
       for (let j = 0; j< userNameFromCommentResponse.length; j++) {
-        let image = userNameFromCommentResponse[j].image
+        let image = userNameFromCommentResponse[j].photo
         let text = commentResponse[j].text
         
         comment = {
