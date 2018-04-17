@@ -38,7 +38,7 @@ module.exports = {
   create_new_post: async (req, res) => {
     let newPost = await new PostModel(req.body).save()
     let dishResponse = await DishModel.findById(newPost.id_dish)
-    if (dishResponse.type == 'mydish') {
+    if (dishResponse.type != 'normal') {
       let dishLevel = dishResponse.level
       let exp, limit
       if (dishLevel == '1')
@@ -144,8 +144,6 @@ module.exports = {
     return res.json({ message: 'Post and comment successfully deleted' })
   },
   
-  //Technically แล้ว มึงควรแก้ตั้งแต่ตอน Post ให้ query หา ชื่อ มาแปะ ใน .user (เปลี่ยน id_user เป็น user) แล้วข้างในเป็น JSON เก็บ id_user และ name
-  
   get_feeds_by_user_id: async (req, res) => {
     let followingResponse = await UserModel.findOne({_id: req.query.userId}, 'followings')
     let followings_arr = followingResponse.followings
@@ -158,6 +156,7 @@ module.exports = {
     let returnResponse = []
     let idUserFromCommentResponse
     for(let i = 0; i< postResponse.length; i++) {
+      let dishResponse = await DishModel.findOne({_id: postResponse[i].id_dish}, 'type')
       let userNameFromCommentResponse = []
       let user = usernameResponse.filter((user) => {
         return postResponse[i].id_user == user._id
@@ -199,7 +198,8 @@ module.exports = {
         caption: postResponse[i].caption,
         user_name: user.name,
         photo: user.photo,
-        status: status
+        status: status,
+        type: dishResponse.type
       }
       returnResponse.push(postDetail)
     }
@@ -217,6 +217,7 @@ module.exports = {
     let returnResponse = []
     let idUserFromCommentResponse
     for(let i = 0; i< postResponse.length; i++) {
+      let dishResponse = await DishModel.findOne({_id: postResponse[i].id_dish}, 'type')
       let userNameFromCommentResponse = []
       let user = usernameResponse.filter((user) => {
         return postResponse[i].id_user == user._id
@@ -258,7 +259,8 @@ module.exports = {
         caption: postResponse[i].caption,
         user_name: user.name,
         photo: user.photo,
-        status: status
+        status: status,
+        type: dishResponse.type
       }
       returnResponse.push(postDetail)
     }
