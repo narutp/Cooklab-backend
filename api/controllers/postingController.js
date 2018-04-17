@@ -32,7 +32,7 @@ module.exports = {
     let postResponse = await PostModel.findOne({_id: newComment.id_post})
     postResponse.comments.push(newComment._id)
     await postResponse.save()
-    return res.json(true)
+    return res.json(newComment)
   },
   
   create_new_post: async (req, res) => {
