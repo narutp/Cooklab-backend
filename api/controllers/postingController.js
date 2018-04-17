@@ -105,7 +105,6 @@ module.exports = {
   
   get_image_post_by_user_id: async (req, res) => {
     let postResponse = await PostModel.find({ id_user: req.query.user_id},'id_dish')
-    console.log(postResponse)
     let idDishFromPost = postResponse.map((post) => {
       return post.id_dish
     })
@@ -125,7 +124,7 @@ module.exports = {
   
   delete_comment: async (req, res) => {
     let commentResponse = await CommentModel.findOne({_id: req.body.commentId})
-    let postId = comment.id_post
+    let postId = commentResponse.id_post
     commentResponse = await CommentModel.remove({_id: req.body.commentId})
     let postResponse = await PostModel.findOne({_id: postId})
     let index = postResponse.comments.indexOf(req.body.commentId)
