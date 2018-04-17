@@ -29,18 +29,17 @@ var UserSchema = new Schema({
   password: { 
     type: String,
   },
-  achievements: {
-    type: Array,
-    default: []
-  },
-  followings: {
-    type: Array,
-    default: []
-  },
-  fans: {
-    type: Array,
-    default: []
-  },
+  achievements: [{
+    type: String
+  }],
+  followings: [{
+    type: String,
+    ref: 'Users'
+  }],
+  fans: [{
+    type: String,
+    ref: 'Users'
+  }],
   photo: {
     type: String,
     default: ''

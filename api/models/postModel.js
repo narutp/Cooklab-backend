@@ -21,14 +21,12 @@ var PostSchema = new Schema({
   timestamp: {
     type: Date
   },
-  comments: {
-    type: Array,
-    default: []
-  },
-  trophy_list: { 
-    type: Array,
-    default: []
-  },
+  comments: [{
+    type: String
+  }],
+  trophy_list: [{ 
+    type: String
+  }],
   image: {
     type: String
   }

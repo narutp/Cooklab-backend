@@ -22,28 +22,24 @@ var DishSchema = new Schema({
     type: Number,
     default: 0
   },
-  rate_list: {
-    type: Array,
-    default: []  
-  },
+  rate_list: [{
+    type: String 
+  }],
   calories: {
     type: Number
   },
   image: { 
     type: String
   },
-  recipe: {
-    type: Array,
-    default: []
-  },
-  ingredients: {
-    type: Array,
-    default: []
-  },
-  tags: {
-    type: Array,
-    default: []
-  },
+  recipe: [{
+    type: String,
+  }],
+  ingredients: [{
+    type: String
+  }],
+  tags: [{
+    type: String
+  }],
   type: {
     type: String,
     enum: ['normal', 'mydish', 'private'],
