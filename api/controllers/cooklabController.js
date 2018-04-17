@@ -114,7 +114,7 @@ module.exports = {
     let endTime = Moment().endOf('month').subtract(7,'hours')
     let postResponse = await PostModel.find({}).where('timestamp').gt(startTime).lt(endTime).exec()
     let userTrophy = []
-    // ตรองมาดูตรงนี้ 
+    // ตรองมาดูตรงนี้
     for (let i=0; i<postResponse.length; i++) {
       let post = postResponse[i]
       if (req.query.user_id) {
@@ -127,19 +127,23 @@ module.exports = {
         return data.user_id === post.id_user
       })
       if (index > -1) {
-        trophies = userTrophy[index].trophies
-        userTrophy.splice(index,1)
+        // trophies = userTrophy[index].trophies
+        // userTrophy.splice(index,1)
+        userTrophy[index].trophies += post.trophies 
       }
-      let userResponse = await UserModel.findOne({_id: post.id_user}, 'name photo rank')
-      trophies += post.trophies
-      let obj = {
-        user_id: post.id_user,
-        name: userResponse.name,
-        trophies: trophies,
-        image: userResponse.photo,
-        rank: userResponse.rank
+      else {
+        let userResponse = await UserModel.findOne({_id: post.id_user}, 'name photo rank')
+        let obj = {
+          user_id: post.id_user,
+          name: userResponse.name,
+          trophies: trophies,
+          image: userResponse.photo,
+          rank: userResponse.rank
+        }
+        userTrophy.push(obj)
       }
-      userTrophy.push(obj)
+      // trophies += post.trophies
+      
     }
     userTrophy.sort(Compare.compareByTrophy)
     return res.json(userTrophy)

@@ -24,7 +24,6 @@ module.exports = {
   },
   
   create_new_comment: async (req, res) => {
-    console.log(Moment().add(7,'hours'))
     if (req.body.text == "") {
       return res.json(false)
     }
@@ -33,7 +32,7 @@ module.exports = {
     let postResponse = await PostModel.findOne({_id: newComment.id_post})
     postResponse.comments.push(newComment._id)
     await postResponse.save()
-    return res.json(newComment)
+    return res.json(true)
   },
   
   create_new_post: async (req, res) => {

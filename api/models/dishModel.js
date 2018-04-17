@@ -45,7 +45,7 @@ var DishSchema = new Schema({
   },
   type: {
     type: String,
-    enum: ['normal', 'mydish'],
+    enum: ['normal', 'mydish', 'private'],
     default: 'normal'
   }
   
