@@ -5,12 +5,12 @@ var Schema = mongoose.Schema;
 
 var AchievementSchema = new Schema({
   name: {
-    type: String,
+    type: String
   },
   description: {
-    type: String,
+    type: String
   }
-  
+
 });
 
 module.exports = mongoose.model('Achievements', AchievementSchema);

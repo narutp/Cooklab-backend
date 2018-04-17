@@ -116,5 +116,18 @@ module.exports = {
       trophy: countTrophy
     }
     return res.json(returnResponse)
+  },
+
+  get_following_and_fan_by_user_id: async (req, res) => {
+    let userResponse = await UserModel.findOne({_id: req.query.user_id})
+    let followings = userResponse.followings
+    let fans = userResponse.fans
+    let followingResponse = await UserModel.find({_id: {$in: followings}}, 'name photo')
+    let fanResponse = await UserModel.find({_id: {$in: fans}}, 'name photo')
+    let returnResponse = {
+      following: followingResponse,
+      fan: fanResponse
+    }
+    return res.json(returnResponse)
   }
 }
