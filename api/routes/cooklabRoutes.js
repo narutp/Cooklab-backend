@@ -158,5 +158,5 @@ module.exports = function(app) {
     .get(posting.get_comment_by_post_id)
 
   app.route('/get_following_and_fan')
-    .get(user.get_following_and_fan_by_user_id)
+    .get(user.get_following_and_fan_by_user_id)  
 };

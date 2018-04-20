@@ -335,7 +335,8 @@ module.exports = {
         id_user: idUserFromComment[i],
         name: nameList[i],
         image: photoList[i],
-        text: commentResponse[i].text
+        text: commentResponse[i].text,
+        timestamp: commentResponse[i].timestamp
       }
       returnResponse.push(comment)
     }
