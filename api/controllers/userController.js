@@ -124,9 +124,22 @@ module.exports = {
     let fans = userResponse.fans
     let followingResponse = await UserModel.find({_id: {$in: followings}}, 'name photo')
     let fanResponse = await UserModel.find({_id: {$in: fans}}, 'name photo')
+    let fanList = []
+    for (let i=0; i<fanResponse.length; i++) {
+      let status
+      status = followings.indexOf(fanResponse[i]._id) > -1
+      let fan = {
+        photo: fanResponse[i].photo,
+        _id: fanResponse[i]._id,
+        name: fanResponse[i].name,
+        status: status
+      }
+      fanList.push(fan)
+    }
+    
     let returnResponse = {
       following: followingResponse,
-      fan: fanResponse
+      fan: fanList
     }
     return res.json(returnResponse)
   }
