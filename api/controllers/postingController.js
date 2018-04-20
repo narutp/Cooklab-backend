@@ -28,7 +28,7 @@ module.exports = {
       return res.json(false)
     }
     let newComment = new CommentModel(req.body)
-    let timestamp = Moment()
+    let timestamp = Date.now()
     newComment.timestamp = timestamp
     await newComment.save()
     let postResponse = await PostModel.findOne({_id: newComment.id_post})
@@ -39,7 +39,7 @@ module.exports = {
   
   create_new_post: async (req, res) => {
     let newPost = new PostModel(req.body)
-    let timestamp = Moment()
+    let timestamp = Date.now()
     newPost.timestamp = timestamp
     await newPost.save()
     let dishResponse = await DishModel.findById(newPost.id_dish)
