@@ -40,13 +40,16 @@ module.exports = {
 
   create_new_notification: async (req, res) => {
     let postResponse = await PostModel.findOne({_id: req.body.id_post})
-    if (postResponse.id_user == req.body.id_target) {
+    let id_target = postResponse.id_user
+    if (id_target == req.body.id_user) {
       return res.json(false)
     }
     let newNotification = new NotificationModel(req.body)
     let timestamp = Date.now()
     newNotification.timestamp = timestamp
+    newNotification.id_target = id_target
     await newNotification.save()
+    return res.json(true)
   },
   
   create_new_post: async (req, res) => {
