@@ -44,15 +44,10 @@ io.on('connection', (socket) => {
 		console.log(onlineUser)
 	})
 	socket.on('notify', (data) => {
-		if (typeof data === 'string') {
-			var object = JSON.parse(data)
-			for (var i in object.followerList) {
-				var user = onlineUser.find(id => id.user_id === object.followerList[i])
-				if (user !== undefined) {
-					console.log('notify user ', user)
-					socket.to(user.id).emit('notify', (new Date()))
-				}
-			}
+		var user = onlineUser.find(id => id.user_id === data.targetId)
+		if (user !== undefined) {
+			console.log('notify user ', user)
+			socket.to(user.id).emit('notify', (new Date()))
 		}
 	})
 })
