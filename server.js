@@ -1,4 +1,5 @@
 var express = require('express'),
+  socket = require('socket.io'),
   app = express(),
   port = process.env.PORT || 3000,
   mongoose = require('mongoose'),
@@ -14,6 +15,7 @@ var express = require('express'),
 // mongoose instance connection url connection
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://35.197.132.120:27017/cooklabdb'); 
+// mongoose.connect('mongodb://cooklab.online/cooklabdb');
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -22,6 +24,41 @@ app.use(bodyParser.json());
 var routes = require('./api/routes/cooklabRoutes'); //importing route
 routes(app); //register the route
 
+var server = require('http').Server(app);
+var io = socket(server);
+
+const onlineUser = []
+io.on('connection', (socket) => {
+	// console.log('user connected ', socket.id)
+	socket.on('disconnect', () => {
+		const user = onlineUser.find(i => i.id === socket.id)
+		console.log(user)
+		onlineUser.pop(user)
+		console.log('user disconnected')
+		console.log(onlineUser)
+	})
+	socket.on('authenUser', (data) => {
+		if (typeof data === 'string') {
+			var object = JSON.parse(data)
+			const user = { id: socket.id, user_id: object.userId }
+			onlineUser.push(user)
+			console.log('authenUser', socket.id)
+			console.log(onlineUser)
+		}
+	})
+	socket.on('notify', (data) => {
+		if (typeof data === 'string') {
+			var object = JSON.parse(data)
+			for (var i in object.followerList) {
+				var user = onlineUser.find(id => id.user_id === object.followerList[i])
+				if (user !== undefined) {
+					console.log('notify user ', user)
+					socket.to(user.id).emit('notify', (new Date()))
+				}
+			}
+		}
+	})
+})
 
 app.listen(port);
 
