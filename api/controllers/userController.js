@@ -9,7 +9,8 @@ var mongoose = require('mongoose'),
   DishModel = mongoose.model('Dishes'),
   IngredientModel = mongoose.model('Ingredients'),
   PostModel = mongoose.model('Posts'),
-  UserModel = mongoose.model('Users')
+  UserModel = mongoose.model('Users'),
+  NotificationModel = mongoose.model('Notification')
 
 module.exports = {
   list_all_users: async (req, res) => {

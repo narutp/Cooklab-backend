@@ -158,5 +158,11 @@ module.exports = function(app) {
     .get(posting.get_comment_by_post_id)
 
   app.route('/get_following_and_fan')
-    .get(user.get_following_and_fan_by_user_id)  
+    .get(user.get_following_and_fan_by_user_id)
+
+  app.route('/create_notification')
+    .post(posting.create_new_notification)
+
+  app.route('/get_noti_by_user')
+    .get(posting.get_notification_by_user_id)
 };

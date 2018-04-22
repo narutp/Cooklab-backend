@@ -9,7 +9,8 @@ var mongoose = require('mongoose'),
   DishModel = mongoose.model('Dishes'),
   IngredientModel = mongoose.model('Ingredients'),
   PostModel = mongoose.model('Posts'),
-  UserModel = mongoose.model('Users');
+  UserModel = mongoose.model('Users'),
+  NotificationModel = mongoose.model('Notification')
 
 module.exports = {
 
@@ -35,6 +36,17 @@ module.exports = {
     postResponse.comments.push(newComment._id)
     await postResponse.save()
     return res.json(newComment)
+  },
+
+  create_new_notification: async (req, res) => {
+    let postResponse = await PostModel.findOne({_id: req.body.id_post})
+    if (postResponse.id_user == req.body.id_target) {
+      return res.json(false)
+    }
+    let newNotification = new NotificationModel(req.body)
+    let timestamp = Date.now()
+    newNotification.timestamp = timestamp
+    await newNotification.save()
   },
   
   create_new_post: async (req, res) => {
@@ -340,6 +352,24 @@ module.exports = {
       }
       returnResponse.push(comment)
     }
+    return res.json(returnResponse)
+  },
+
+  get_notification_by_user_id: async (req, res) => {
+    let returnResponse = []
+    let notificationResponse = await NotificationModel.find({id_target: req.body.user_id})
+    for (let i=0; i<notificationResponse.length; i++) {
+      let userResponse = await UserModel.findOne({_id: notification[i].id_user},'name photo')
+      let notification = {
+        image: userResponse.photo,
+        name: userResponse.name,
+        type: notificationResponse[i].type,
+        id_post: notificationResponse[i].id_post,
+        timestamp: notificationResponse[i].timestamp
+      }
+      returnResponse.push(notification)
+    }
+    returnResponse.sort(Compare.compareByDate)
     return res.json(returnResponse)
   }
 }

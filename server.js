@@ -8,7 +8,8 @@ var express = require('express'),
   Dish = require('./api/models/dishModel'),
   Ingredient = require('./api/models/ingredientModel'),
   Post = require('./api/models/postModel'),
-  User = require('./api/models/userModel'),
+	User = require('./api/models/userModel'),
+	Notification = require('./api/models/notificationModel'),
   bodyParser = require('body-parser'),
   _ = require('lodash')
   
