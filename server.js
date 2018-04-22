@@ -29,7 +29,7 @@ var io = socket(server);
 
 const onlineUser = []
 io.on('connection', (socket) => {
-	// console.log('user connected ', socket.id)
+	console.log('user connected ', socket.id)
 	socket.on('disconnect', () => {
 		const user = onlineUser.find(i => i.id === socket.id)
 		console.log(user)
@@ -38,13 +38,10 @@ io.on('connection', (socket) => {
 		console.log(onlineUser)
 	})
 	socket.on('authenUser', (data) => {
-		if (typeof data === 'string') {
-			var object = JSON.parse(data)
-			const user = { id: socket.id, user_id: object.userId }
-			onlineUser.push(user)
-			console.log('authenUser', socket.id)
-			console.log(onlineUser)
-		}
+		const user = { id: socket.id, user_id: data.userId }
+		onlineUser.push(user)
+		console.log('authenUser', socket.id)
+		console.log(onlineUser)
 	})
 	socket.on('notify', (data) => {
 		if (typeof data === 'string') {
@@ -60,7 +57,11 @@ io.on('connection', (socket) => {
 	})
 })
 
-app.listen(port);
+server.listen(port, () => {
+	console.log('LookGoods RESTful API server started on: ' + port, new Date())
+})
+
+export default io
 
 
 console.log('CookLab RESTful API server started on: ' + port);
