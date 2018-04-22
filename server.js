@@ -61,7 +61,5 @@ server.listen(port, () => {
 	console.log('LookGoods RESTful API server started on: ' + port, new Date())
 })
 
-export default io
+module.exports = io
 
-
-console.log('CookLab RESTful API server started on: ' + port);
