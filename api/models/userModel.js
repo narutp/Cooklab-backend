@@ -41,7 +41,7 @@ var UserSchema = new Schema({
   }],
   photo: {
     type: String,
-    default: ''
+    default: 'https://firebasestorage.googleapis.com/v0/b/cooklab-cb6c0.appspot.com/o/images%2F31131303_811219885735136_5945402947293675520_n.png?alt=media&token=9d743dd6-d6ab-490b-8816-ea55697d23e1'
   },
   cover: {
     type: String,
