@@ -362,7 +362,7 @@ module.exports = {
     let returnResponse = []
     let notificationResponse = await NotificationModel.find({id_target: req.query.user_id})
     for (let i=0; i<notificationResponse.length; i++) {
-      let userResponse = await UserModel.findOne({_id: notification[i].id_user},'name photo')
+      let userResponse = await UserModel.findOne({_id: notificationResponse[i].id_user},'name photo')
       let notification = {
         image: userResponse.photo,
         name: userResponse.name,
