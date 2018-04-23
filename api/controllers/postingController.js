@@ -360,7 +360,7 @@ module.exports = {
 
   get_notification_by_user_id: async (req, res) => {
     let returnResponse = []
-    let notificationResponse = await NotificationModel.find({id_target: req.body.user_id})
+    let notificationResponse = await NotificationModel.find({id_target: req.query.user_id})
     for (let i=0; i<notificationResponse.length; i++) {
       let userResponse = await UserModel.findOne({_id: notification[i].id_user},'name photo')
       let notification = {
