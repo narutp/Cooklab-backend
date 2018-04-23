@@ -1,4 +1,5 @@
 'use strict';
+var socket = require('../../socket')
 var Compare = require('../util/compare');
 var passwordHash = require('password-hash');
 var Moment = require('moment')
@@ -39,6 +40,7 @@ module.exports = {
   },
 
   create_new_notification: async (req, res) => {
+    socket.notify(req.body.id_user)
     let postResponse = await PostModel.findOne({_id: req.body.id_post})
     let id_target = postResponse.id_user
     if (id_target == req.body.id_user) {
@@ -53,6 +55,11 @@ module.exports = {
     userResponse.noti_status = false
     await userResponse.save()
     return res.json(true)
+  },
+
+  delete_notification: async (req, res) => {
+    let notificationResponse = await NotificationModel.remove({_id: req.body.notification_id})
+    return res.json({ message: 'Notification successfully deleted' })
   },
   
   create_new_post: async (req, res) => {

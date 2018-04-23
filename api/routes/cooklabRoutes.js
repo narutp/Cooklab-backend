@@ -168,4 +168,7 @@ module.exports = function(app) {
 
   app.route('/get_user_dish')
     .get(dish.get_user_dish)
+
+  app.route('/delete_notification')
+    .delete(posting.delete_notification)
 };
