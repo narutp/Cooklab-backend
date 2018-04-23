@@ -46,6 +46,9 @@ var UserSchema = new Schema({
   cover: {
     type: String,
     default: 'https://firebasestorage.googleapis.com/v0/b/cooklab-cb6c0.appspot.com/o/images%2Fdefault_cover.jpg?alt=media&token=c56444f5-6850-400a-a752-5bb4450f17f3'
+  },
+  noti_status: {
+    type: Boolean
   }
 
 });

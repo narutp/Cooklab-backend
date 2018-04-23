@@ -49,6 +49,9 @@ module.exports = {
     newNotification.timestamp = timestamp
     newNotification.id_target = id_target
     await newNotification.save()
+    let userResponse = await UserModel.findOne({_id: req.body.id_target})
+    userResponse.noti_status = false
+    await userResponse.save()
     return res.json(true)
   },
   
@@ -373,6 +376,9 @@ module.exports = {
       returnResponse.push(notification)
     }
     returnResponse.sort(Compare.compareByDate)
+    let ownerResponse = await UserModel.findOne({_id: req.query.user_id})
+    ownerResponse.noti_status = true
+    await ownerResponse.save()
     return res.json(returnResponse)
   }
 }
