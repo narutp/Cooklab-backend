@@ -120,5 +120,10 @@ module.exports = {
     }
     await dishResponse.save()
     return res.json(dishResponse)
+  },
+
+  get_user_dish: async (req, res) => {
+    let dishResponse = await DishModel.find({id_user: req.query.user_id, type: { $ne: 'normal' }})
+    return res.json(dishResponse)
   }
 }

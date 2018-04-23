@@ -165,4 +165,7 @@ module.exports = function(app) {
 
   app.route('/get_noti_by_user')
     .get(posting.get_notification_by_user_id)
+
+  app.route('/get_user_dish')
+    .get(dish.get_user_dish)
 };
