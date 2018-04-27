@@ -24,8 +24,14 @@ module.exports = {
   create_new_dish: async (req, res) => {
     let newDish =  new DishModel(req.body)
     if (req.body.type == 'mydish') {
-      newDish.recipe = req.body.recipe_str
-      newDish.ingredients = req.body.ingredient_str
+      let recipe = req.body.recipe_str.map((r) => {
+        return r.text
+      })
+      let ingredient = req.body.ingredient_str.map((i) => {
+        return i.text
+      })
+      newDish.recipe = recipe
+      newDish.ingredients = ingredient
     }
     await newDish.save()
     return res.json(newDish)
