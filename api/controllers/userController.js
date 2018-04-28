@@ -73,6 +73,7 @@ module.exports = {
   },
   
   login_by_username_and_password: async (req, res) => {
+    console.log('IN')
     let userResponse = await UserModel.findOne({username: req.body.username})
     let password = userResponse.password
     let result = passwordHash.verify(req.body.password, password);
