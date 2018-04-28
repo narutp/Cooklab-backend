@@ -32,6 +32,6 @@ var server = require('http').Server(app);
 socket.initSocket(server)
 
 server.listen(port, () => {
-	console.log('LookGoods RESTful API server started on: ' + port, new Date())
+	console.log('Cooklab RESTful API server started on: ' + port, new Date())
 })
 
