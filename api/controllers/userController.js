@@ -19,7 +19,8 @@ module.exports = {
   },
   
   create_new_user: async (req, res) => {
-    let userResponse = await UserModel.find({},'username')
+    let userResponse = await UserModel.find({},
+      'username')
     let usernameFromResponse = userResponse.map((user) => {
       return user.username
     })
@@ -39,7 +40,10 @@ module.exports = {
   },
   
   update_user: async (req, res) => {
-    let userResponse = await UserModel.findOneAndUpdate({_id: req.body.userId}, req.body, {new: true})
+    let userResponse = await UserModel.findOneAndUpdate(
+      {_id: req.body.userId}, 
+      req.body, 
+      {new: true})
     return res.json(userResponse)
   },
   
@@ -106,9 +110,13 @@ module.exports = {
   },
 
   count_trophy_and_dish: async (req, res) => {
-    let countDish = await DishModel.count({id_user: req.query.user_id, type: 'mydish'})
+    let countDish = await DishModel.count(
+      {id_user: req.query.user_id, 
+        type: 'mydish'})
     let dishResponse = await DishModel.find({id_user: req.query.user_id})
-    let postResponse = await PostModel.find({id_user: req.query.user_id},'trophies')
+    let postResponse = await PostModel.find(
+      {id_user: req.query.user_id},
+      'trophies')
     let countTrophy = 0
     postResponse.forEach((post) => {
       countTrophy += post.trophies
@@ -124,8 +132,12 @@ module.exports = {
     let userResponse = await UserModel.findOne({_id: req.query.user_id})
     let followings = userResponse.followings
     let fans = userResponse.fans
-    let followingResponse = await UserModel.find({_id: {$in: followings}}, 'name photo')
-    let fanResponse = await UserModel.find({_id: {$in: fans}}, 'name photo')
+    let followingResponse = await UserModel.find(
+      {_id: {$in: followings}}, 
+      'name photo')
+    let fanResponse = await UserModel.find(
+      {_id: {$in: fans}}, 
+      'name photo')
     let fanList = []
     let followingList = []
     for (let i=0; i<followingResponse.length; i++) {

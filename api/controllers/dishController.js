@@ -53,12 +53,18 @@ module.exports = {
   },
   
   update_dish: async (req, res) => {
-    let dishResponse = await DishModel.findOneAndUpdate({_id: req.body.dishId}, req.body, {new: true})
+    let dishResponse = await DishModel.findOneAndUpdate(
+      {_id: req.body.dishId}, 
+      req.body, 
+      {new: true})
     return res.json(dishResponse)
   },
   
   update_ingredient: async (req, res) => {
-    let ingredientResponse = await IngredientModel.findOneAndUpdate({_id: req.body.ingredientId}, req.body, {new: true})
+    let ingredientResponse = await IngredientModel.findOneAndUpdate(
+      {_id: req.body.ingredientId}, 
+      req.body, 
+      {new: true})
     return res.json(ingredientResponse)
   },
   
@@ -128,7 +134,9 @@ module.exports = {
   },
 
   get_user_dish: async (req, res) => {
-    let dishResponse = await DishModel.find({id_user: req.query.user_id, type: { $ne: 'normal' }})
+    let dishResponse = await DishModel.find(
+      {id_user: req.query.user_id, 
+        type: { $ne: 'normal' }})
     return res.json(dishResponse)
   }
 }

@@ -30,7 +30,10 @@ module.exports = {
   },
 
   update_achievement: async (req, res) => {
-    let achievementResponse = await AchievementModel.findOneAndUpdate({_id: req.body.achievementId}, req.body, {new: true})
+    let achievementResponse = await AchievementModel.findOneAndUpdate(
+      {_id: req.body.achievementId}, 
+      req.body, 
+      {new: true})
     return res.json(achievementResponse)
   },
 
@@ -41,7 +44,9 @@ module.exports = {
 
   search: async (req, res) => {
     let returnResponse = []
-    let userResponse = await UserModel.find({name: {"$regex": req.query.text, $options: 'si'}},'name photo')
+    let userResponse = await UserModel.find(
+      {name: {"$regex": req.query.text, $options: 'si'}},
+      'name photo')
     for (let i=0; i<userResponse.length; i++) {
       let userResult = {
         _id: userResponse[i]._id,
@@ -51,7 +56,9 @@ module.exports = {
       }
       returnResponse.push(userResult)
     }
-    let dishResponse = await DishModel.find({name: {"$regex": req.query.text, $options: 'si'},type: 'mydish'},'name image')
+    let dishResponse = await DishModel.find(
+      {name: {"$regex": req.query.text, $options: 'si'},type: 'mydish'},
+      'name image')
     for (let i=0; i<dishResponse.length; i++) {
       let dishResult = {
         _id: dishResponse[i]._id,
@@ -68,10 +75,14 @@ module.exports = {
     let userList = []
     let userResponse
     if (req.query.user_id) {
-      let followingResponse = await UserModel.findOne({_id: req.query.user_id}, 'followings')
+      let followingResponse = await UserModel.findOne(
+        {_id: req.query.user_id}, 
+        'followings')
       let followings = followingResponse.followings
       followings.push(req.query.user_id)
-      userResponse = await UserModel.find({_id: {$in: followings}},'name photo rank')
+      userResponse = await UserModel.find(
+        {_id: {$in: followings}},
+        'name photo rank')
     }
     else {
       userResponse = await UserModel.find({},'name photo rank')
@@ -82,11 +93,15 @@ module.exports = {
     let countList = []
     for (let i=0; i<idUserFromResponse.length; i++) {
       let count = 0
-      let postResponse = await PostModel.find({id_user: idUserFromResponse[i] },'id_dish')
+      let postResponse = await PostModel.find(
+        {id_user: idUserFromResponse[i] },
+        'id_dish')
       let idDishFromPost = postResponse.map((post) => {
         return post.id_dish
       })
-      let dishResponse = await DishModel.find({_id: {$in: idDishFromPost}}, 'type')
+      let dishResponse = await DishModel.find(
+        {_id: {$in: idDishFromPost}}, 
+        'type')
       for (let j=0; j<dishResponse.length; j++) {
         if (dishResponse[j].type == 'mydish') {
           count++
@@ -107,15 +122,20 @@ module.exports = {
   get_most_trophy_user: async (req, res) => {
     let followings = []
     if (req.query.user_id) {
-      let followingResponse = await UserModel.findOne({_id: req.query.user_id}, 'followings')
+      let followingResponse = await UserModel.findOne(
+        {_id: req.query.user_id}, 
+        'followings')
       followings = followingResponse.followings
       followings.push(req.query.user_id)
     }
     let startTime = Moment().startOf('month').subtract(7,'hours')
     let endTime = Moment().endOf('month').subtract(7,'hours')
-    let postResponse = await PostModel.find({}).where('timestamp').gt(startTime).lt(endTime).exec()
+    let postResponse = await PostModel.find({})
+      .where('timestamp')
+      .gt(startTime)
+      .lt(endTime)
+      .exec()
     let userTrophy = []
-    // ตรองมาดูตรงนี้
     for (let i=0; i<postResponse.length; i++) {
       let post = postResponse[i]
       if (req.query.user_id) {
@@ -128,12 +148,12 @@ module.exports = {
         return data.user_id === post.id_user
       })
       if (index > -1) {
-        // trophies = userTrophy[index].trophies
-        // userTrophy.splice(index,1)
         userTrophy[index].trophies += post.trophies 
       }
       else {
-        let userResponse = await UserModel.findOne({_id: post.id_user}, 'name photo rank')
+        let userResponse = await UserModel.findOne(
+          {_id: post.id_user}, 
+          'name photo rank')
         let obj = {
           user_id: post.id_user,
           name: userResponse.name,
@@ -143,7 +163,6 @@ module.exports = {
         }
         userTrophy.push(obj)
       }
-      // trophies += post.trophies
       
     }
     userTrophy.sort(Compare.compareByTrophy)
@@ -153,14 +172,19 @@ module.exports = {
   get_most_rank_user: async (req,res) => {
     let userList = []
     if(req.query.user_id) {
-      let followingResponse = await UserModel.findOne({_id: req.query.user_id}, 'followings')
+      let followingResponse = await UserModel.findOne(
+        {_id: req.query.user_id}, 
+        'followings')
       let followings = followingResponse.followings
       followings.push(req.query.user_id)
-      followingResponse = await UserModel.find({_id: {$in: followings}}, 'name photo experience rank')
+      followingResponse = await UserModel.find(
+        {_id: {$in: followings}}, 
+        'name photo experience rank')
       userList = followingResponse
     }
     else {
-      let userResponse = await UserModel.find({}, 'name photo experience rank')
+      let userResponse = await UserModel.find({}, 
+        'name photo experience rank')
       userList = userResponse
     }
     userList.sort(Compare.compareByExp)

@@ -134,21 +134,31 @@ module.exports = {
   },
   
   get_image_post_by_user_id: async (req, res) => {
-    let postResponse = await PostModel.find({ id_user: req.query.user_id},'id_dish')
+    let postResponse = await PostModel.find(
+      {id_user: req.query.user_id},
+      'id_dish')
     let idDishFromPost = postResponse.map((post) => {
       return post.id_dish
     })
-    let dishResponse = await DishModel.find({_id: {$in: idDishFromPost}},'image')
+    let dishResponse = await DishModel.find(
+      {_id: {$in: idDishFromPost}},
+      'image')
     return res.json(dishResponse)
   },
   
   update_comment: async (req, res) => {
-    let commentResponse = await CommentModel.findOneAndUpdate({_id: req.body.commentId}, req.body, {new: true})
+    let commentResponse = await CommentModel.findOneAndUpdate(
+      {_id: req.body.commentId}, 
+      req.body, 
+      {new: true})
     return res.json(commentResponse)
   },
   
   update_post: async (req, res) => {
-    let postResponse = await PostModel.findOneAndUpdate({_id: req.body.postId}, req.body, {new: true})
+    let postResponse = await PostModel.findOneAndUpdate(
+      {_id: req.body.postId}, 
+      req.body, 
+      {new: true})
     return res.json(postResponse)
   },
   
@@ -166,7 +176,9 @@ module.exports = {
   },
   
   delete_post: async (req, res) => {
-    let postResponse = await PostModel.findOne({_id: req.body.postId},'comments')
+    let postResponse = await PostModel.findOne(
+      {_id: req.body.postId},
+      'comments')
     let commentFromPost = postResponse.comments
     postResponse = await PostModel.remove({_id: req.body.postId})    
     let commentResponse = await CommentModel.remove({_id: {$in: commentFromPost}})
@@ -174,7 +186,9 @@ module.exports = {
   },
   
   get_feeds_by_user_id: async (req, res) => {
-    let followingResponse = await UserModel.findOne({_id: req.query.userId}, 'followings')
+    let followingResponse = await UserModel.findOne(
+      {_id: req.query.userId}, 
+      'followings')
     let following_arr = followingResponse.followings
     following_arr.push(req.query.userId)
     let postResponse = await PostModel.find({id_user: {$in: following_arr}})
@@ -188,7 +202,9 @@ module.exports = {
     let returnResponse = []
     let idUserFromCommentResponse
     for(let i = 0; i< postResponse.length; i++) {
-      let dishResponse = await DishModel.findOne({_id: postResponse[i].id_dish}, 'type')
+      let dishResponse = await DishModel.findOne(
+        {_id: postResponse[i].id_dish}, 
+        'type')
       let userNameFromCommentResponse = []
       let user = usernameResponse.filter((user) => {
         return postResponse[i].id_user == user._id
@@ -235,23 +251,14 @@ module.exports = {
       }
       returnResponse.push(postDetail)
     }
-    // returnResponse.sort(Compare.compareByDate)
-    // returnResponse.splice(15,returnResponse.length-15)
     return res.json(returnResponse)
   },
   
   get_top_feed: async (req, res) => {
-    // let postResponse = await PostModel.find({}).sort({'trophies':-1}).limit(20).exec()
-    // for(let i = 0; i< postResponse.length; i++) {
-    //   let commentResponse = await CommentModel.find({_id: {$in: postResponse[i].comments}}).populate('id_user')
-    //   console.log(commentResponse)
-
-    // }
-    // return res.json(true)
-    
-    
-    
-    let postResponse = await PostModel.find({}).sort({'trophies':-1}).limit(20).exec()
+    let postResponse = await PostModel.find({})
+    .sort({'trophies':-1})
+    .limit(20)
+    .exec()
     let idUserFromPost = postResponse.map((post) => {
       return post.id_user
     })
@@ -259,7 +266,9 @@ module.exports = {
     let returnResponse = []
     let idUserFromCommentResponse
     for(let i = 0; i< postResponse.length; i++) {
-      let dishResponse = await DishModel.findOne({_id: postResponse[i].id_dish}, 'type')
+      let dishResponse = await DishModel.findOne(
+        {_id: postResponse[i].id_dish}, 
+        'type')
       let userNameFromCommentResponse = []
       let user = usernameResponse.filter((user) => {
         return postResponse[i].id_user == user._id
@@ -345,7 +354,9 @@ module.exports = {
 
   get_comment_by_post_id: async (req, res) => {
     let returnResponse = []
-    let postResponse = await PostModel.findOne({_id: req.query.post_id}, 'comments')
+    let postResponse = await PostModel.findOne(
+      {_id: req.query.post_id}, 
+      'comments')
     let comments = postResponse.comments
     let commentResponse = await CommentModel.find({_id: {$in: comments}})
     let idUserFromComment = commentResponse.map((comment) => {
@@ -354,7 +365,9 @@ module.exports = {
     let nameList = []
     let photoList = []
     for (let i=0; i<idUserFromComment.length; i++) {
-      let userResponse = await UserModel.findOne({_id: idUserFromComment[i]}, 'name photo')
+      let userResponse = await UserModel.findOne(
+        {_id: idUserFromComment[i]}, 
+        'name photo')
       nameList.push(userResponse.name)
       photoList.push(userResponse.photo)
     }
@@ -375,7 +388,9 @@ module.exports = {
     let returnResponse = []
     let notificationResponse = await NotificationModel.find({id_target: req.query.user_id})
     for (let i=0; i<notificationResponse.length; i++) {
-      let userResponse = await UserModel.findOne({_id: notificationResponse[i].id_user},'name photo')
+      let userResponse = await UserModel.findOne(
+        {_id: notificationResponse[i].id_user},
+        'name photo')
       let notification = {
         image: userResponse.photo,
         name: userResponse.name,
