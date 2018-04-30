@@ -96,7 +96,7 @@ module.exports = function(app) {
 
   app.route('/update_user')
     .put(user.update_user)
-
+    
   app.route('/get_user')
     .get(user.get_user)
 

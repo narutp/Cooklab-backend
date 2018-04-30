@@ -175,9 +175,12 @@ module.exports = {
   
   get_feeds_by_user_id: async (req, res) => {
     let followingResponse = await UserModel.findOne({_id: req.query.userId}, 'followings')
-    let followings_arr = followingResponse.followings
-    followings_arr.push(req.query.userId)
-    let postResponse = await PostModel.find({id_user: {$in: followings_arr}})
+    let following_arr = followingResponse.followings
+    following_arr.push(req.query.userId)
+    let postResponse = await PostModel.find({id_user: {$in: following_arr}})
+      .sort({'timestamp':-1})
+      .limit(10)
+      .exec()
     let idUserFromPost = postResponse.map((post) => {
       return post.id_user
     })
@@ -232,8 +235,8 @@ module.exports = {
       }
       returnResponse.push(postDetail)
     }
-    returnResponse.sort(Compare.compareByDate)
-    returnResponse.splice(15,returnResponse.length-15)
+    // returnResponse.sort(Compare.compareByDate)
+    // returnResponse.splice(15,returnResponse.length-15)
     return res.json(returnResponse)
   },
   
