@@ -23,7 +23,8 @@ var DishSchema = new Schema({
     default: 0
   },
   rate_list: [{
-    type: String 
+    rate: Number,
+    user_id: String, 
   }],
   calories: {
     type: Number

@@ -84,8 +84,7 @@ module.exports = {
 
   rate_dish_by_id_user: async (req, res) => {
     let dishResponse = await DishModel.findOne({_id: req.body.dish_id})
-    let index = -1
-    index = dishResponse.rate_list.findIndex((data) => {
+    let index = dishResponse.rate_list.findIndex((data) => {
       return data.user_id === req.body.user_id
     })
     if (index > -1) {
