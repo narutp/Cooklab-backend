@@ -179,7 +179,7 @@ module.exports = {
     following_arr.push(req.query.userId)
     let postResponse = await PostModel.find({id_user: {$in: following_arr}})
       .sort({'timestamp':-1})
-      .limit(10)
+      .limit(30)
       .exec()
     let idUserFromPost = postResponse.map((post) => {
       return post.id_user
